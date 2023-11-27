@@ -7,7 +7,6 @@ my $password = '369789';
 my $dsn = "DBI:mysql:database=wikipedia;host=localhost";
 my $dbh = DBI->connect($dsn, $user, $password) or die("No se pudo conectar!");
 
-
 my $sth = $dbh->prepare("SELECT title FROM articles");
 $sth->execute();
 
