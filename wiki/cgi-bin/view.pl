@@ -36,6 +36,9 @@ $text =~ s/~~(.*?)~~/<s>$1<\/s>/gs;
 # Código
 $text =~ s/```(.*?)```/<code>$1<\/code>/gs;
 
+# Imagen local
+$text =~ s/!\[(.*?)\]\(([^)]+)\)\{width=(\d+) height=(\d+)\}/<img src="$2" alt="$1" width="$3" height="$4">/gs;
+
 # Imagenes con URL
 $text =~ s/!\[(.*?)\]\((https?:\/\/.*?)\)\{width=(\d+) height=(\d+)\}/<img src="$2" alt="$1" width="$3" height="$4">/gs;
 
