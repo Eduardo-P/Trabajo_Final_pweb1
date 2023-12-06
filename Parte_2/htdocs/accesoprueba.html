@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Acceso</title>
+    <link rel="stylesheet" href="styleacceso.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  </head>
+  <body>
+    <div class="center">
+      <!-- FORMULARIO PARA EL LOGIN -->
+      <h1>Login</h1>
+      <form method="post" id="loginForm" action="/cgi-bin/login.pl">
+        <div class="icon user">
+          <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="txt_field">
+          <input type="text" name="userName" required />
+          <span></span>
+          <label>Usuario</label>
+        </div>
+        <div class="icon password">
+          <i class="bi bi-key-fill"></i>
+        </div>
+        <div class="txt_field">
+          <input type="password" name="password" required />
+          <span></span>
+          <label>Contraseña</label>
+        </div>
+        <input type="submit" value="Login" />
+        <div class="signup_link">¿Aún no estás registrado? <a href="#" id="signupLink">Register</a></div>
+      </form>
+
+      <!-- FORMULARIO PARA EL REGISTER -->
+      <form method="post" id="signupForm" class="hidden" action="/cgi-bin/register.pl">
+        <div class="icon user">
+          <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="txt_field">
+          <input type="text" name="userName" required />
+          <span></span>
+          <label>Usuario</label>
+        </div>
+        <div class="icon password">
+          <i class="bi bi-key-fill"></i>
+        </div>
+        <div class="txt_field">
+          <input type="password" name="password" required />
+          <span></span>
+          <label>Contraseña</label>
+        </div>
+        <div class="txt_field">
+          <input type="text" name="firstName" id="firstName" required />
+          <span></span>
+          <label>Nombres</label>
+        </div>
+        <div class="txt_field">
+          <input type="text" name="lastName" id="lastName" required />
+          <span></span>
+          <label>Apellidos</label>
+        </div>
+        <input type="submit" value="Signup" />
+        <div class="login_link">¿Ya te has registrado? <a href="#" id="loginLink">Login</a></div>
+      </form>
+    </div>
+
+    <div id="result" class="hidden">
+      <div id="estructura" class="contenidoXML">
+        <h4>FORMATO XML</h4>
+        <pre id="content"></pre>
+      </div>
+    </div>
+
+    <!-- SCRIPT PARA AGREGAR EL XML CREADO EN PERL, DEPENDIENDO SI ES LOGIN O REGISTER -->
+    
+    <script>
+      /*
+      document.getElementById("loginForm").addEventListener("submit", function(event) {
+          // Evitar que el formulario se envíe de forma convencional
+          event.preventDefault();
+      
+          // URL del archivo XML
+          const xmlUrl = "http://localhost/usuario.xml";
+      
+          // Abrir una nueva pestaña con el contenido XML
+          const newTab = window.open(xmlUrl, '_blank');
+      
+          // Volver a enfocar en la pestaña actual
+          window.focus();
+      });
+
+      function handleSubmit(event, formId) {
+        event.preventDefault();
+    
+        var form = event.target;
+        var formData = new FormData(form);
+    
+        fetch(form.action, {
+          method: form.method,
+          body: formData
+        });
+
+        // Puedes realizar acciones adicionales después de enviar el formulario
+        console.log('Formulario enviado');
+
+        // URL del archivo XML
+          const xmlUrl = "http://localhost/usuario.xml";
+      
+          // Abrir una nueva pestaña con el contenido XML
+          const newTab = window.open(xmlUrl, '_blank');
+      
+          // Volver a enfocar en la pestaña actual
+          window.focus();
+      }
+
+      document.getElementById("loginForm").addEventListener("submit", function(event) {
+        handleSubmit(event, "loginForm");
+      });
+    
+      document.getElementById("signupForm").addEventListener("submit", function(event) {
+        handleSubmit(event, "signupForm");
+      });
+    */
+    </script>
+    <!-- SCRIPT PARA IR A REGISTER O A LOGIN EN LA MISMA PAGINA -->
+    <script>
+      document.getElementById("signupLink").addEventListener("click", function() {
+        document.getElementById("loginForm").classList.add("hidden");
+        document.getElementById("signupForm").classList.remove("hidden");
+        document.getElementById("result").classList.add("hidden");
+        document.querySelector('.center h1').textContent = 'Register';
+      });
+
+      document.getElementById("loginLink").addEventListener("click", function() {
+        document.getElementById("signupForm").classList.add("hidden");
+        document.getElementById("loginForm").classList.remove("hidden");
+        document.getElementById("result").classList.add("hidden");
+        document.querySelector('.center h1').textContent = 'Login';
+      });
+    </script>
+
+    <script>
+        // Verifica si hay una página referente
+        console.log("Página Referente:", document.referrer);
+        if (document.referrer === "http://localhost/accesoprueba.html") {
+            const xmlUrl = "http://localhost/usuario.xml";
+      
+          // Abrir una nueva pestaña con el contenido XML
+          const newTab = window.open(xmlUrl, '_blank');
+      
+          // Volver a enfocar en la pestaña actual
+          window.focus();
+        } else {
+            console.log("No hay página referente.");
+        }
+    </script>
+  </body>
+</html>

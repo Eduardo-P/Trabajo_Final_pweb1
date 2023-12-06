@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista Paginas Web</title>
+        <style>
+            ul {
+                margin-left: -20px;
+            }
+
+            li {
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+            }
+
+            form {
+                display: inline-block;
+                margin-left: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Nuestras paginas de wiki</h1>
+        <div id="usuario"></div>
+        <div id="articulos">
+            <ul id="lista">
+            </ul>
+        </div>
+        <ul>
+            <!-- Por ahora, colocaré algunos elementos de muestra -->
+            <li>
+                <a href="view.pl?title=Pagina1">Pagina1</a>
+                <form action="delete.pl" method="get">
+                    <input type="hidden" name="title" value="Pagina1">
+                    <input type="submit" value="X">
+                </form>
+                <form action="edit.pl" method="get">
+                    <input type="hidden" name="title" value="Pagina1">
+                    <!-- <input type="submit" value="E">  este sería lo que se da en el edit.pl -->
+                </form>
+                <a href="http://localhost/update.html"><button>E</button></a> <!-- simula la redirreción a la página para editar -->
+            </li>
+            <li>
+                <a href="view.pl?title=Pagina2">Pagina2</a>
+                <form action="delete.pl" method="get">
+                    <input type="hidden" name="title" value="Pagina2">
+                    <input type="submit" value="X">
+                </form>
+                <form action="edit.pl" method="get">
+                    <input type="hidden" name="title" value="Pagina2">
+                    <!-- <input type="submit" value="E"> -->
+                </form>
+                <a href="http://localhost/update.html"><button>E</button></a>
+
+            </li>
+        </ul>
+        <hr>
+        <a href="http://localhost/new.html">Nueva Página</a>
+        <br>
+        <a href="http://localhost/index.html">Volver al Inicio</a>
+        <div id="result" class="hidden">
+            <div id="estructura" class="contenidoXML">
+              <h4>FORMATO XML</h4>
+              <pre id="content"></pre>
+            </div>
+          </div>
+    </body>
+    <script>
+        /*
+        // Verifica si hay una página referente
+        console.log("Página Referente:", document.referrer);
+        if (document.referrer === "http://localhost/accesoprueba.html") {
+            const xmlUrl1 = "http://localhost/usuario.xml";
+            const xmlUrl2 = "http://localhost/listaArticulos.xml";
+      
+          // Abrir una nueva pestaña con el contenido XML
+          const newTab1 = window.open(xmlUrl1, '_blank');
+          const newTab2 = window.open(xmlUrl2, '_blank');
+      
+          // Volver a enfocar en la pestaña actual
+          window.focus();
+        } else {
+            console.log("No hay página referente.");
+        }
+        */
+    </script>
+    <script>/*
+        document.addEventListener("DOMContentLoaded", function () {
+            var xhr = new XMLHttpRequest();
+
+            // Configurar la solicitud
+            xhr.open("GET", "usuario.xml", true);
+
+            // Configurar la función de retorno de llamada
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Procesar la respuesta XML
+                    var xmlDoc = xhr.responseXML;
+                    var mensaje = xmlDoc.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
+
+                    // Actualizar el contenido de la página
+                    document.getElementById("usuario").innerHTML = mensaje;
+                }
+            };
+
+            // Enviar la solicitud
+            xhr.send();
+        });*/
+    </script>
+    <script>/*
+        // Obtener el valor del elemento HTML
+        var usuario = document.getElementById("usuario").innerText;
+        
+        // Hacer la solicitud AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Procesar la respuesta XML
+                var xmlDoc = xhr.responseXML;
+                var articles = xmlDoc.getElementsByTagName("article");
+        
+                // Actualizar dinámicamente el contenido de la página
+                var lista = document.getElementById("lista");
+        
+                for (var i = 0; i < articles.length; i++) {
+                    var article = articles[i];
+                    var title = article.getElementsByTagName("title")[0].textContent;
+        
+                    var li = document.createElement("li");
+                    var a = document.createElement("a");
+                    var deleteForm = document.createElement("form");
+                    var editForm = document.createElement("form");
+        
+                    a.href = "view.pl?title=" + encodeURIComponent(title);
+                    a.textContent = title;
+
+                    deleteForm.action = "delete.pl";
+                    deleteForm.method = "get";
+                    var deleteInput = document.createElement("input");
+                    deleteInput.type = "hidden";
+                    deleteInput.name = "title";
+                    deleteInput.value = title;
+                    var deleteButton = document.createElement("input");
+                    deleteButton.type = "submit";
+                    deleteButton.value = "X";
+                    deleteForm.appendChild(deleteInput);
+                    deleteForm.appendChild(deleteButton);
+        
+                    editForm.action = "edit.pl";
+                    editForm.method = "get";
+                    var editInput = document.createElement("input");
+                    editInput.type = "hidden";
+                    editInput.name = "title";
+                    editInput.value = title;
+                    var editButton = document.createElement("input");
+                    editButton.type = "submit";
+                    editButton.value = "E";
+                    editForm.appendChild(editInput);
+                    editForm.appendChild(editButton);
+        
+                    li.appendChild(a);
+                    li.appendChild(deleteForm);
+                    li.appendChild(editForm);
+        
+                    lista.appendChild(li);
+                }
+            }
+        };
+        
+        xhr.open("GET", "/cgi-bin/listp.pl?owner=" + encodeURIComponent(usuario), true);
+        xhr.send(); */
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var xhr = new XMLHttpRequest();
+    
+            // Configurar la solicitud
+            xhr.open("GET", "usuario.xml", true);
+    
+            // Configurar la función de retorno de llamada
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Procesar la respuesta XML
+                    var xmlDoc = xhr.responseXML;
+                    var mensaje = xmlDoc.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
+    
+                    // Actualizar el contenido de la página
+                    document.getElementById("usuario").innerHTML = mensaje;
+    
+                    // Segundo script
+                    // Obtener el valor del elemento HTML
+                    var usuario = document.getElementById("usuario").innerText;
+    
+                    // Hacer la solicitud AJAX
+                    var xhr2 = new XMLHttpRequest();
+                    xhr2.onreadystatechange = function () {
+                        if (xhr2.readyState === 4 && xhr2.status === 200) {
+                            // Procesar la respuesta XML
+                            var xmlDoc = xhr2.responseXML;
+                            var articles = xmlDoc.getElementsByTagName("article");
+    
+                            // Actualizar dinámicamente el contenido de la página
+                            var lista = document.getElementById("lista");
+    
+                            for (var i = 0; i < articles.length; i++) {
+                                var article = articles[i];
+                                var title = article.getElementsByTagName("title")[0].textContent;
+    
+                                var li = document.createElement("li");
+                                var a = document.createElement("a");
+                                var deleteForm = document.createElement("form");
+                                var editForm = document.createElement("form");
+    
+                                a.href = "/cgi-bin/view.pl?owner=" + usuario + "&title=" + title;
+                                a.textContent = title;
+    
+                                deleteForm.action = "/cgi-bin/delete.pl";
+                                deleteForm.method = "get";
+                                deleteForm.id="deleteForm";
+                                var deleteTitle = document.createElement("input");
+                                deleteTitle.type = "hidden";
+                                deleteTitle.name = "title";
+                                deleteTitle.value = title;
+                                var deleteOwner = document.createElement("input");
+                                deleteOwner.type = "hidden";
+                                deleteOwner.name = "owner";
+                                deleteOwner.value = usuario;
+                                var deleteButton = document.createElement("input");
+                                deleteButton.type = "submit";
+                                deleteButton.value = "X";
+                                deleteForm.appendChild(deleteTitle);
+                                deleteForm.appendChild(deleteOwner);
+                                deleteForm.appendChild(deleteButton);
+    
+                                editForm.action = "edit.html";
+                                editForm.method = "get";
+                                editForm.id="editForm";
+                                var editTitle = document.createElement("input");
+                                editTitle.type = "hidden";
+                                editTitle.name = "title";
+                                editTitle.value = title;
+                                var editOwner = document.createElement("input");
+                                editOwner.type = "hidden";
+                                editOwner.name = "owner";
+                                editOwner.value = usuario;
+                                var editButton = document.createElement("input");
+                                editButton.type = "submit";
+                                editButton.value = "E";
+                                editForm.appendChild(editTitle);
+                                editForm.appendChild(editOwner);
+                                editForm.appendChild(editButton);
+    
+                                li.appendChild(a);
+                                li.appendChild(deleteForm);
+                                li.appendChild(editForm);
+    
+                                lista.appendChild(li);
+                            }
+                        }
+                    };
+    
+                    xhr2.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(usuario), true);
+                    xhr2.send();
+                }
+            };
+    
+            // Enviar la solicitud
+            xhr.send();
+        });
+    </script>
+    <script>/*
+        function handleSubmit(event, formId) {
+          event.preventDefault();
+      
+          var form = event.target;
+          var formData = new FormData(form);
+      
+          fetch(form.action, {
+            method: form.method,
+            body: formData
+          })
+          .then(response => response.text())
+          .then(xmlData => {
+            document.getElementById("content").textContent = xmlData;
+            document.getElementById("result").classList.remove("hidden");
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        }
+      
+        document.getElementById("deleteForm").addEventListener("submit", function(event) {
+          handleSubmit(event, "loginForm");
+        });
+      
+        document.getElementById("editForm").addEventListener("submit", function(event) {
+          handleSubmit(event, "signupForm");
+        });*/
+
+        
+      </script>
+</html>

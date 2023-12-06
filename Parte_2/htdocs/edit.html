@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar</title>
+</head>
+<body>
+    <h1>Actualiza la página</h1>
+    <form action="new.pl" method="get">
+        <input type="hidden" name="title" value="ValorDelTitulo">
+        <label for="cont">Texto:</label>
+        <textarea id="cont" name="text" rows="10" cols="50" placeholder=""></textarea>
+        <br>
+        <input type="submit" value="Enviar">
+    </form>
+    <a href="http://localhost/list.html">Cancelar</a>
+
+    <script>
+        var parametros = new URLSearchParams(window.location.search);
+        var title = parametros.get('title');
+        var owner = parametros.get('owner');
+        
+        // Hacer la solicitud AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Procesar la respuesta XML
+                    var xmlDoc = xhr.responseXML;
+                    var textNode = xmlDoc.getElementsByTagName("text")[0].childNodes[0];
+                    var textValue = textNode ? textNode.nodeValue : "";
+                    document.getElementById("cont").value = textValue;
+                } else {
+                    console.error('Error en la solicitud: ' + xhr.status);
+                }
+            }
+        };
+        
+        xhr.open("GET", "/cgi-bin/article.pl?owner=" + owner + "&title=" + title, true);
+        xhr.send();
+    </script>
+</body>
+</html>
