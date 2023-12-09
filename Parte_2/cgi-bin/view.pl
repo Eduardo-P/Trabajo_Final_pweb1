@@ -4,10 +4,8 @@ use DBI;
 
 my $cgi = CGI->new;
 
-#my $owner = $cgi->param('owner');
-#my $title = $cgi->param('title');
-my $owner = 'Edward';
-my $title = 'Mack';
+my $owner = $cgi->param('owner');
+my $title = $cgi->param('title');
 
 my $user = 'root';
 my $password = '369789';
@@ -20,10 +18,6 @@ $sth->execute($title, $owner);
 $dbh->disconnect;
 
 my $text = $sth->fetchrow_array;
-
-print $cgi->header('text/html');
-print $text;
-exit;
 
 # Encabezados
 $text =~ s/^(#+)\s+(.*)$/"<h" . length($1) . ">$2<\/h" . length($1) . ">"/meg;
@@ -67,6 +61,6 @@ $text =~ s/\[(.*?)\]\((.*?)\)/<a href="$2">$1<\/a>/gs;
 # Párrafos
 $text =~ s/(^\s*.+\n)/<p>$1<\/p>/mg;
 
-# Imprimir la salida HTML
-#print $cgi->header('text/html');
+
+print $cgi->header('text/html');
 print $text;

@@ -2,8 +2,10 @@
 use CGI ':standard';
 use DBI;
 
-my $owner = param('owner');
-my $title = param('title');
+my $cgi = CGI->new;
+
+my $owner = $cgi->param('owner');
+my $title = $cgi->param('title');
 
 my $user = 'root';
 my $password = '369789';
@@ -12,17 +14,22 @@ my $dbh = DBI->connect($dsn, $user, $password) or die("No se pudo conectar!");
 
 my $sth = $dbh->prepare("DELETE FROM articles WHERE title = ? AND owner = ?");
 
-my $estructura = "<?xml version='1.0' encoding='utf-8'?>\n".
+my $xml = "<?xml version='1.0' encoding='utf-8'?>\n".
                  "<article>\n";
 
 if ($sth->execute($title, $owner)) {
-    $estructura .= "  <owner>$owner</owner>\n".
-                   "  <title>$title</title>\n";
+    $xml .= "  <owner>$owner</owner>\n".
+            "  <title>$title</title>\n";
 }
 
-$estructura .= "</article>\n";
+$xml .= "</article>\n";
 
 $dbh->disconnect;
 
+# Crear el archivo XML
+open my $archivo, '>', "../htdocs/delete.xml" or die "No se pudo abrir el archivo usuario.xml: $!";
+print $archivo $xml;
+close $archivo;
+
 print $cgi->header('text/xml');
-print $estructura;
+print $xml;

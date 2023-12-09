@@ -23,48 +23,26 @@
     <body>
         <h1>Nuestras paginas de wiki</h1>
         <div id="usuario"></div>
+
         <div id="articulos">
             <ul id="lista">
             </ul>
         </div>
-        <ul>
-            <!-- Por ahora, colocaré algunos elementos de muestra -->
-            <li>
-                <a href="view.pl?title=Pagina1">Pagina1</a>
-                <form action="delete.pl" method="get">
-                    <input type="hidden" name="title" value="Pagina1">
-                    <input type="submit" value="X">
-                </form>
-                <form action="edit.pl" method="get">
-                    <input type="hidden" name="title" value="Pagina1">
-                    <!-- <input type="submit" value="E">  este sería lo que se da en el edit.pl -->
-                </form>
-                <a href="http://localhost/update.html"><button>E</button></a> <!-- simula la redirreción a la página para editar -->
-            </li>
-            <li>
-                <a href="view.pl?title=Pagina2">Pagina2</a>
-                <form action="delete.pl" method="get">
-                    <input type="hidden" name="title" value="Pagina2">
-                    <input type="submit" value="X">
-                </form>
-                <form action="edit.pl" method="get">
-                    <input type="hidden" name="title" value="Pagina2">
-                    <!-- <input type="submit" value="E"> -->
-                </form>
-                <a href="http://localhost/update.html"><button>E</button></a>
-
-            </li>
-        </ul>
+        
         <hr>
-        <a href="http://localhost/new.html">Nueva Página</a>
+        <a id="nuevaPagina" href="http://localhost/new.html">Nueva Página</a>
+        <br>
+        <a href="http://localhost/accesoprueba.html">Iniciar sesion con otro usuario</a>
         <br>
         <a href="http://localhost/index.html">Volver al Inicio</a>
-        <div id="result" class="hidden">
+        
+        <div id="result">
             <div id="estructura" class="contenidoXML">
               <h4>FORMATO XML</h4>
               <pre id="content"></pre>
             </div>
-          </div>
+        </div>
+        
     </body>
     <script>
         /*
@@ -171,7 +149,7 @@
         xhr.open("GET", "/cgi-bin/listp.pl?owner=" + encodeURIComponent(usuario), true);
         xhr.send(); */
     </script>
-    <script>
+    <script>/*
         document.addEventListener("DOMContentLoaded", function () {
             var xhr = new XMLHttpRequest();
     
@@ -221,10 +199,12 @@
                                 var deleteTitle = document.createElement("input");
                                 deleteTitle.type = "hidden";
                                 deleteTitle.name = "title";
+                                deleteTitle.id = "title";
                                 deleteTitle.value = title;
                                 var deleteOwner = document.createElement("input");
                                 deleteOwner.type = "hidden";
                                 deleteOwner.name = "owner";
+                                deleteOwner.id = "owner";
                                 deleteOwner.value = usuario;
                                 var deleteButton = document.createElement("input");
                                 deleteButton.type = "submit";
@@ -267,7 +247,33 @@
     
             // Enviar la solicitud
             xhr.send();
+
+            
         });
+        // Delegación de eventos en el contenedor "lista"
+        document.getElementById("lista").addEventListener("submit", function (event) {
+            var form = event.target;
+
+            // Verificar si el formulario enviado es el formulario de eliminación
+            if (form.id === "deleteForm") {
+                event.preventDefault();
+
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(xmlData => {
+                        document.getElementById("content").textContent = xmlData;
+                        // document.getElementById("result").classList.remove("hidden");
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });*/
     </script>
     <script>/*
         function handleSubmit(event, formId) {
@@ -298,6 +304,196 @@
           handleSubmit(event, "signupForm");
         });*/
 
+
+    </script>
+    <script>/*
+        document.getElementById("deleteForm").addEventListener("submit", function(event) {
+          event.preventDefault();
+      
+          var form = event.target;
+          var formData = new FormData(form);
+      
+          fetch(form.action, {
+            method: form.method,
+            body: formData
+          })
+          .then(response => response.text())
+          .then(xmlData => {
+            document.getElementById("content").textContent = xmlData;
+            //document.getElementById("result").classList.remove("hidden");
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        });*/
+    </script>
+    <script>/*
+        function eliminarArticulo() {
+            var formulario = document.getElementById("deleteForm");
+            var datos = new FormData(formulario);
+
+            var title = formulario.getElementById("title");
+            var owner = formulario.getElementById("owner");
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Procesar la respuesta XML
+                        var xmlDoc = xhr.responseXML;
+                        var resultado = xmlDoc.getElementsByTagName("title")[0].textContent;
+
+                        // Manejar el resultado según tus necesidades
+                        console.log("Resultado del servidor:", resultado);
+                        document.getElementById("content").textContent = resultado;
+                        document.getElementById("result").classList.remove("hidden");
+                    } else {
+                        // Manejar errores en la solicitud
+                        console.error('Error en la solicitud: ' + xhr.status);
+                    }
+                }
+            };
+
+            xhr.open("GET", "/cgi-bin/delete.pl?owner" + owner + "&title" + title, true);
+            xhr.send();
+        }*/
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var parametros = new URLSearchParams(window.location.search);
+        var owner = parametros.get('owner');
+
+        document.getElementById("usuario").innerHTML = owner;
+
+        var enlace = document.getElementById("nuevaPagina");
+        enlace.href = enlace.href + "?owner=" + owner;
+
+                // Hacer la solicitud AJAX
+                var xhr2 = new XMLHttpRequest();
+                xhr2.onreadystatechange = function () {
+                    if (xhr2.readyState === 4 && xhr2.status === 200) {
+                        // Procesar la respuesta XML
+                        var xmlDoc = xhr2.responseXML;
+                        var articles = xmlDoc.getElementsByTagName("article");
+    
+                        // Actualizar dinámicamente el contenido de la página
+                        var lista = document.getElementById("lista");
+    
+                        for (var i = 0; i < articles.length; i++) {
+                            var article = articles[i];
+                            var title = article.getElementsByTagName("title")[0].textContent;
+    
+                            var li = document.createElement("li");
+                            var a = document.createElement("a");
+                            var deleteForm = document.createElement("form");
+                            var editForm = document.createElement("form");
+
+                            li.id = title;
+    
+                            a.href = "/cgi-bin/view.pl?owner=" + owner + "&title=" + title;
+                            a.textContent = title;
+    
+                            deleteForm.action = "/cgi-bin/delete.pl";
+                            deleteForm.method = "post";
+                            deleteForm.id = "deleteForm";
+                            var deleteOwner = document.createElement("input");
+                            deleteOwner.type = "hidden";
+                            deleteOwner.name = "owner";
+                            //deleteOwner.id = "owner";
+                            deleteOwner.value = owner;
+                            var deleteTitle = document.createElement("input");
+                            deleteTitle.type = "hidden";
+                            deleteTitle.name = "title";
+                            //deleteTitle.id = "title";
+                            deleteTitle.value = title;
+                            var deleteButton = document.createElement("input");
+                            deleteButton.type = "submit";
+                            deleteButton.value = "X";
+                            deleteForm.appendChild(deleteTitle);
+                            deleteForm.appendChild(deleteOwner);
+                            deleteForm.appendChild(deleteButton);
+    
+                            editForm.action = "edit.html";
+                            editForm.method = "get";
+                            editForm.id = "editForm";
+                            var editOwner = document.createElement("input");
+                            editOwner.type = "hidden";
+                            editOwner.name = "owner";
+                            editOwner.value = owner;
+                            var editTitle = document.createElement("input");
+                            editTitle.type = "hidden";
+                            editTitle.name = "title";
+                            editTitle.value = title;
+                            var editButton = document.createElement("input");
+                            editButton.type = "submit";
+                            editButton.value = "E";
+                            editForm.appendChild(editTitle);
+                            editForm.appendChild(editOwner);
+                            editForm.appendChild(editButton);
+    
+                            li.appendChild(a);
+                            li.appendChild(deleteForm);
+                            li.appendChild(editForm);
+    
+                            lista.appendChild(li);
+                        }
+                    }
+                };
+    
+                xhr2.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(owner), true);
+                xhr2.send();
+            }
+        );
+    
+    // Delegación de eventos en el contenedor "lista"
+    document.getElementById("lista").addEventListener("submit", function (event) {
+        var form = event.target;
+    
+        // Verificar si el formulario enviado es un formulario de eliminación
+        if (form.tagName === "FORM" && form.id === "deleteForm") {
+            event.preventDefault();
+    
+            var formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+                .then(response => response.text())
+                .then(xmlData => {
+                    var parser = new DOMParser();
+                    var xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+                    var titleElement = xmlDoc.querySelector('title');
+
+                    if (titleElement) {
+                        // Primera forma: Dirección a new.pl con parámetros title y text
+                        var titleValue = titleElement.textContent;
+
+                        // Obtener el elemento por su ID
+                        var eliminarArticulo = document.getElementById(titleValue);
+
+                        var lista = document.getElementById("lista");
+                        lista.removeChild(eliminarArticulo);
+
+                        document.getElementById("content").textContent = "Se elimino correctamente el articulo " + titleValue;
+                    } else {
+                        document.getElementById("content").textContent = "Error al eliminar el articulo!";
+                    }
+                    document.getElementById("result").classList.remove("hidden");
+
+                    setTimeout(function () {
+                        document.getElementById("result").classList.add("hidden");
+                        // También puedes realizar otra acción aquí después de 10 segundos
+                    }, 10000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+    </script>
+    <script>
         
-      </script>
+    </script>
 </html>

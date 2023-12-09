@@ -5,21 +5,36 @@
     <title>Editar</title>
 </head>
 <body>
-    <h1>Actualiza la página</h1>
-    <form action="new.pl" method="get">
-        <input type="hidden" name="title" value="ValorDelTitulo">
+    <h1 id="titulo"></h1>
+    <form id="edit" action="/cgi-bin/update.pl" method="get">
+        <input type="hidden" name="owner" id="owner" value="">
+        <input type="hidden" name="title" id="title" value="">
         <label for="cont">Texto:</label>
         <textarea id="cont" name="text" rows="10" cols="50" placeholder=""></textarea>
         <br>
         <input type="submit" value="Enviar">
     </form>
-    <a href="http://localhost/list.html">Cancelar</a>
+    <a id="listPagina" href="http://localhost/list.html">Cancelar</a>
 
+    <div id="result" class="hidden">
+        <div id="estructura" class="contenidoXML">
+          <h4>FORMATO XML</h4>
+          <pre id="content"></pre>
+        </div>
+    </div>
+    
     <script>
         var parametros = new URLSearchParams(window.location.search);
-        var title = parametros.get('title');
         var owner = parametros.get('owner');
+        var title = parametros.get('title');
         
+        document.getElementById("titulo").innerHTML = title;
+        document.getElementById("title").value = title;
+        document.getElementById("owner").value = owner;
+
+        var enlace = document.getElementById("listPagina");
+        enlace.href = enlace.href + "?owner=" + owner;
+
         // Hacer la solicitud AJAX
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -38,6 +53,43 @@
         
         xhr.open("GET", "/cgi-bin/article.pl?owner=" + owner + "&title=" + title, true);
         xhr.send();
+
+
+
+        document.getElementById("edit").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var form = event.target;
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => response.text())
+            .then(xmlData => {
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+                // Verificar si el XML contiene elementos <title> y <text>
+                var titleElement = xmlDoc.querySelector('title');
+                var textElement = xmlDoc.querySelector('text');
+
+                if (titleElement && textElement) {
+                  // Primera forma: Dirección a new.pl con parámetros title y text
+                  var titleValue = titleElement.textContent;
+                  var textValue = textElement.textContent;
+                  window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
+                } else {
+                  // Segunda forma: Mostrar mensaje en el elemento con id "content"
+                  document.getElementById("content").textContent = "No se pudo guardar el artículo!";
+                  document.getElementById("result").classList.remove("hidden");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
 </body>
 </html>

@@ -5,7 +5,6 @@ use DBI;
 my $cgi = CGI->new;
 
 my $owner = $cgi->param('owner');
-#my $owner = "Edward";
 
 my $user = 'root';
 my $password = '369789';
@@ -17,62 +16,27 @@ $sth->execute($owner);
 
 
 # Estructura inicial del XML
-my $estructura = <<"EOF";
-<?xml version='1.0' encoding='utf-8'?>
-<articles>
-EOF
+my $xml = "<?xml version='1.0' encoding='utf-8'?>\n".
+          "<articles>\n";
 
 # Procesar los resultados y construir la estructura XML
 while (my $title = $sth->fetchrow_array) {
-    $estructura .= <<"EOF";
-  <article>
-    <owner>$owner</owner>
-    <title>$title</title>
-  </article>
-EOF
+    $xml .= "  <article>\n".
+            "    <owner>$owner</owner>\n".
+            "    <title>$title</title>\n".
+            "  </article>\n";
 }
 
-# Finalizar la estructura XML
-$estructura .= "</articles>\n";
+$xml .= "</articles>\n";
 
 # Desconectar de la base de datos
 $dbh->disconnect;
 
 # Crear el archivo XML
 open my $archivo, '>', "../htdocs/listaArticulos.xml" or die "No se pudo abrir el archivo listaArticulos.xml: $!";
-print $archivo $estructura;
+print $archivo $xml;
 close $archivo;
 
-# Imprimir la cabecera HTTP y la estructura XML
+
 print $cgi->header('text/xml');
-print $estructura;
-
-
-
-
-
-
-#my $estructura = "<?xml version='1.0' encoding='utf-8'?>\n".
-#                 "<articles>\n";
-
-#while (my $title = $sth->fetchrow_array) {
-#    $estructura .= "  <article>\n".
-#                   "    <owner>$owner</owner>\n".
-#                   "    <title>$title</title>\n".
-#                   "  </article>\n";
-#}
-
-#$estructura .= "</articles$owner>\n";
-
-#$dbh->disconnect;
-
-# Crear el archivo XML
-#open my $archivo, '>', "../htdocs/listaArticulos.xml" or die "No se pudo abrir el archivo listaArticulos.xml: $!";
-#print $archivo $estructura;
-#close $archivo;
-
-#print $cgi->redirect('http://localhost/list.html');
-
-
-#print $cgi->header('text/xml');
-#print $estructura;
+print $xml;

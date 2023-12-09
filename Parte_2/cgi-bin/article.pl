@@ -22,12 +22,17 @@ $dbh->disconnect;
 
 my $text = $sth->fetchrow_array;
 
-my $estructura = "<?xml version='1.0' encoding='utf-8'?>\n".
-                 "<article>\n".
-                 "  <owner>$owner</owner>\n".
-                 "  <title>$title</title>\n".
-                 "  <text>$text</text>\n".
-                 "</article>\n";
+my $xml = "<?xml version='1.0' encoding='utf-8'?>\n".
+          "<article>\n".
+          "  <owner>$owner</owner>\n".
+          "  <title>$title</title>\n".
+          "  <text>$text</text>\n".
+          "</article>\n";
+
+# Crear el archivo XML
+open my $archivo, '>', "../htdocs/article.xml" or die "No se pudo abrir el archivo usuario.xml: $!";
+print $archivo $xml;
+close $archivo;
 
 print $cgi->header('text/xml');
-print $estructura;
+print $xml;
