@@ -6,11 +6,11 @@
 </head>
 <body>
     <h1 id="titulo"></h1>
-    <form id="edit" action="/cgi-bin/update.pl" method="get">
+    <form id="edit" action="/cgi-bin/update.pl" method="post">
         <input type="hidden" name="owner" id="owner" value="">
         <input type="hidden" name="title" id="title" value="">
-        <label for="cont">Texto:</label>
-        <textarea id="cont" name="text" rows="10" cols="50" placeholder=""></textarea>
+        <label for="textMD">Texto:</label>
+        <textarea id="textMD" name="text" rows="10" cols="50" value=""></textarea>
         <br>
         <input type="submit" value="Enviar">
     </form>
@@ -22,7 +22,7 @@
           <pre id="content"></pre>
         </div>
     </div>
-    
+
     <script>
         var parametros = new URLSearchParams(window.location.search);
         var owner = parametros.get('owner');
@@ -35,25 +35,21 @@
         var enlace = document.getElementById("listPagina");
         enlace.href = enlace.href + "?owner=" + owner;
 
-        // Hacer la solicitud AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hacer la solicitud AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     // Procesar la respuesta XML
                     var xmlDoc = xhr.responseXML;
-                    var textNode = xmlDoc.getElementsByTagName("text")[0].childNodes[0];
-                    var textValue = textNode ? textNode.nodeValue : "";
-                    document.getElementById("cont").value = textValue;
-                } else {
-                    console.error('Error en la solicitud: ' + xhr.status);
+                    var textValue = xmlDoc.getElementsByTagName("text")[0].textContent;
+                    document.getElementById("textMD").value = textValue;
                 }
-            }
-        };
-        
-        xhr.open("GET", "/cgi-bin/article.pl?owner=" + owner + "&title=" + title, true);
-        xhr.send();
-
+            };
+            
+            xhr.open("GET", "/cgi-bin/article.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title), true);
+            xhr.send();
+        });
 
 
         document.getElementById("edit").addEventListener("submit", function(event) {
@@ -82,7 +78,7 @@
                   window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
                 } else {
                   // Segunda forma: Mostrar mensaje en el elemento con id "content"
-                  document.getElementById("content").textContent = "No se pudo guardar el artículo!";
+                  document.getElementById("content").textContent = "No se pudo actualizar el artículo!";
                   document.getElementById("result").classList.remove("hidden");
                 }
             })

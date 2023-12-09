@@ -359,14 +359,15 @@
         }*/
     </script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var parametros = new URLSearchParams(window.location.search);
+    var parametros = new URLSearchParams(window.location.search);
         var owner = parametros.get('owner');
 
         document.getElementById("usuario").innerHTML = owner;
 
         var enlace = document.getElementById("nuevaPagina");
         enlace.href = enlace.href + "?owner=" + owner;
+
+    document.addEventListener("DOMContentLoaded", function () {
 
                 // Hacer la solicitud AJAX
                 var xhr2 = new XMLHttpRequest();
@@ -387,6 +388,7 @@
                             var a = document.createElement("a");
                             var deleteForm = document.createElement("form");
                             var editForm = document.createElement("form");
+                            var viewForm = document.createElement("form");
 
                             li.id = title;
     
@@ -409,8 +411,8 @@
                             var deleteButton = document.createElement("input");
                             deleteButton.type = "submit";
                             deleteButton.value = "X";
-                            deleteForm.appendChild(deleteTitle);
                             deleteForm.appendChild(deleteOwner);
+                            deleteForm.appendChild(deleteTitle);
                             deleteForm.appendChild(deleteButton);
     
                             editForm.action = "edit.html";
@@ -427,13 +429,32 @@
                             var editButton = document.createElement("input");
                             editButton.type = "submit";
                             editButton.value = "E";
-                            editForm.appendChild(editTitle);
                             editForm.appendChild(editOwner);
+                            editForm.appendChild(editTitle);
                             editForm.appendChild(editButton);
+
+                            viewForm.action = "/cgi-bin/article.pl";
+                            viewForm.method = "post";
+                            viewForm.id = "viewForm";
+                            var viewOwner = document.createElement("input");
+                            viewOwner.type = "hidden";
+                            viewOwner.name = "owner";
+                            viewOwner.value = owner;
+                            var viewTitle = document.createElement("input");
+                            viewTitle.type = "hidden";
+                            viewTitle.name = "title";
+                            viewTitle.value = title;
+                            var viewButton = document.createElement("input");
+                            viewButton.type = "submit";
+                            viewButton.value = "V";
+                            viewForm.appendChild(viewOwner);
+                            viewForm.appendChild(viewTitle);
+                            viewForm.appendChild(viewButton);
     
                             li.appendChild(a);
                             li.appendChild(deleteForm);
                             li.appendChild(editForm);
+                            li.appendChild(viewForm);
     
                             lista.appendChild(li);
                         }
@@ -491,9 +512,58 @@
                     console.error('Error:', error);
                 });
         }
+
+        if (form.tagName === "FORM" && form.id === "viewForm") {
+            event.preventDefault();
+      
+          var form = event.target;
+          var formData = new FormData(form);
+      
+          fetch(form.action, {
+            method: form.method,
+            body: formData
+          })
+          .then(response => response.text())
+          .then(xmlData => {
+            var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+                  var titleValue = xmlDoc.querySelector('title').textContent;
+                  var textValue = xmlDoc.querySelector('text').textContent;
+                  window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
     });
+
     </script>
-    <script>
-        
+    <script>/*
+        document.getElementById("viewForm").addEventListener("submit", function(event) {
+          event.preventDefault();
+      
+          var form = event.target;
+          var formData = new FormData(form);
+      
+          fetch(form.action, {
+            method: form.method,
+            body: formData
+          })
+          .then(response => response.text())
+          .then(xmlData => {
+            var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+                  var titleValue = xmlDoc.querySelector('title').textContent;
+                  var textValue = xmlDoc.querySelector('text').textContent;
+                  window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });*/
     </script>
 </html>
