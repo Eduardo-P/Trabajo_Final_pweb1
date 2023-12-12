@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Acceso</title>
+		<link rel="stylesheet" href="styleacceso.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+	</head>
+	<body>
+		<div class="center">
+			<!-- FORMULARIO PARA EL LOGIN -->
+			<h1>Login</h1>
+			<form method="post" id="loginForm" action="/cgi-bin/login.pl">
+				<div class="icon user">
+					<i class="bi bi-person-fill"></i>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="owner" />
+					<span></span>
+					<label>Usuario</label>
+				</div>
+				<div class="icon password">
+					<i class="bi bi-key-fill"></i>
+				</div>
+				<div class="txt_field">
+					<input type="password" name="password"  />
+					<span></span>
+					<label>Contraseña</label>
+				</div>
+				<input type="submit" value="Login" />
+				<div class="signup_link">¿Aún no estás registrado? <a href="#" id="signupLink">Register</a></div>
+			</form>
+
+			<!-- FORMULARIO PARA EL REGISTER -->
+			<form method="post" id="signupForm" class="hidden" action="/cgi-bin/register.pl">
+				<div class="icon user">
+					<i class="bi bi-person-fill"></i>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="owner"  />
+					<span></span>
+					<label>Usuario</label>
+				</div>
+				<div class="icon password">
+					<i class="bi bi-key-fill"></i>
+				</div>
+				<div class="txt_field">
+					<input type="password" name="password"  />
+					<span></span>
+					<label>Contraseña</label>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="firstName" id="firstName"  />
+					<span></span>
+					<label>Nombres</label>
+				</div>
+				<div class="txt_field">
+					<input type="text" name="lastName" id="lastName"  />
+					<span></span>
+					<label>Apellidos</label>
+				</div>
+				<input type="submit" value="Signup" />
+				<div class="login_link">¿Ya te has registrado? <a href="#" id="loginLink">Login</a></div>
+			</form>
+		</div>
+
+		<div id="result" class="hidden">
+			<div id="estructura" class="contenidoXML">
+				<h4>FORMATO XML</h4>
+				<pre id="content"></pre>
+			</div>
+		</div>
+
+		<!-- SCRIPT PARA EVALUAR EL XML CREADO EN PERL -->
+		<script>
+			function handleSubmit(event, formId) {
+				event.preventDefault();
+    
+				var form = event.target;
+				var formData = new FormData(form);
+    
+				fetch(form.action, {
+					method: form.method,
+					body: formData
+				})
+				.then(response => response.text())
+				.then(xmlData => {
+					var parser = new DOMParser();
+					var xml = parser.parseFromString(xmlData, "text/xml");
+
+					// Verificar si el XML contiene elemento <owner>
+					var ownerElement = xml.querySelector('owner');
+
+					if (ownerElement) {
+						var ownerValue = ownerElement.textContent;
+						window.location.href = "list.html?owner=" + encodeURIComponent(ownerValue);
+					} else {
+						if (formId == "loginForm") {
+							document.getElementById("content").textContent = "Error al ingresar al usuario!";
+						} else {
+							document.getElementById("content").textContent = "Error al registrar el nuevo usuario!";
+						}
+						document.getElementById("result").classList.remove("hidden");
+
+						setTimeout(function () {
+							document.getElementById("result").classList.add("hidden");
+						}, 5000);
+					}
+				});
+			}
+			document.getElementById("loginForm").addEventListener("submit", function(event) {
+				handleSubmit(event, "loginForm");
+			});
+    
+			document.getElementById("signupForm").addEventListener("submit", function(event) {
+				handleSubmit(event, "signupForm");
+			});
+		</script>
+		
+		<!-- SCRIPT PARA IR A REGISTER O A LOGIN EN LA MISMA PAGINA -->
+		<script>
+			document.getElementById("signupLink").addEventListener("click", function() {
+				document.getElementById("loginForm").classList.add("hidden");
+				document.getElementById("signupForm").classList.remove("hidden");
+				document.getElementById("result").classList.add("hidden");
+				document.querySelector('.center h1').textContent = 'Register';
+			});
+
+			document.getElementById("loginLink").addEventListener("click", function() {
+				document.getElementById("signupForm").classList.add("hidden");
+				document.getElementById("loginForm").classList.remove("hidden");
+				document.getElementById("result").classList.add("hidden");
+				document.querySelector('.center h1').textContent = 'Login';
+			});
+		</script>
+	</body>
+</html>

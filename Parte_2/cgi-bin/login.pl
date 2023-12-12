@@ -11,6 +11,7 @@ my $password = $cgi->param('password');
 
 my $xml = "<?xml version='1.0' encoding='utf-8'?>\n".
                  "<user>\n";
+
 if ($owner && $password){
   my $user = 'root';
   my $password_BD = '369789';

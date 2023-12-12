@@ -2,21 +2,19 @@
 use CGI ':standard';
 use DBI;
 
-#my $title = $ARGV[0];
-#my $owner = $ARGV[1];
-
 my $cgi = CGI->new;
 
 my $owner = $cgi->param('owner');
 my $title = $cgi->param('title');
+my $id = $title.$owner;
 
 my $user = 'root';
 my $password = '369789';
 my $dsn = "DBI:mysql:database=wikipedia;host=localhost";
 my $dbh = DBI->connect($dsn, $user, $password) or die("No se pudo conectar!");
 
-my $sth = $dbh->prepare("SELECT text FROM Articles WHERE title = ? AND owner = ?");
-$sth->execute($title, $owner);
+my $sth = $dbh->prepare("SELECT text FROM Articles WHERE id = ?");
+$sth->execute($id);
 
 $dbh->disconnect;
 

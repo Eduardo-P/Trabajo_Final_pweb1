@@ -6,18 +6,19 @@ my $cgi = CGI->new;
 
 my $owner = $cgi->param('owner');
 my $title = $cgi->param('title');
+my $id = $title.$owner;
 
 my $user = 'root';
 my $password = '369789';
 my $dsn = "DBI:mysql:database=wikipedia;host=localhost";
 my $dbh = DBI->connect($dsn, $user, $password) or die("No se pudo conectar!");
 
-my $sth = $dbh->prepare("DELETE FROM articles WHERE title = ? AND owner = ?");
+my $sth = $dbh->prepare("DELETE FROM articles WHERE id = ?");
 
 my $xml = "<?xml version='1.0' encoding='utf-8'?>\n".
                  "<article>\n";
 
-if ($sth->execute($title, $owner)) {
+if ($sth->execute($id)) {
     $xml .= "  <owner>$owner</owner>\n".
             "  <title>$title</title>\n";
 }
