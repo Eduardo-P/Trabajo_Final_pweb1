@@ -1,255 +1,254 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8">
-		<title>Lista Paginas Web</title>
-		<style>
-			ul {
-				margin-left: -20px;
-				font: Candara;
-				font-size: 18px;
-			}
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista Paginas Web</title>
+        <style>
+            ul {
+                margin-left: -20px;
+                font: Candara;
+                font-size: 18px;
+            }
 
-			li {
-				margin-bottom: 10px;
-				display: flex;
-				align-items: center;
-			}
-			h1 {
-				text-align: center;
-				padding: 5px 0;
-				border-bottom: 1px solid silver;
-				font-size: 20px;
-			}
-			body {
-				background: #2980b9;
-				height: 100vh;
-			}
-			.center {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				max-width: 510px;
-				width: 100%;
-				background: white;
-				border-radius: 10px;
-			}
-			a{
-				padding: 0 20px;
-				font-size: 18px;
-			}
-			.hidden {
-				display: none;
-			}
-			.contenidoXML {
-				position: fixed;
-				font-size: 90%;
-				top: 11%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				background: black;
-				color: white;
-				border-radius: 10px;
-				padding: 15px;
-				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-			}
-			.contenidoXML h4 {
-				text-align: center;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="center">
-			<h1>Nuestras páginas de wiki</h1>
-			<div id="usuario"></div>
+            li {
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+            }
+            h1 {
+                text-align: center;
+                padding: 5px 0;
+                border-bottom: 1px solid silver;
+                font-size: 20px;
+            }
+            body {
+                background: #2980b9;
+                height: 100vh;
+            }
+            .center {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                max-width: 510px;
+                width: 100%;
+                background: white;
+                border-radius: 10px;
+            }
+            a{
+                padding: 0 20px;
+                font-size: 18px;
+            }
+            .hidden {
+                display: none;
+            }
+            .contenidoXML {
+                position: fixed;
+                font-size: 90%;
+                top: 11%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: black;
+                color: white;
+                border-radius: 10px;
+                padding: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
+            .contenidoXML h4 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <h1>Nuestras páginas de wiki</h1>
+            <div id="usuario"></div>
 
-			<div id="articulos">
-				<ul id="lista">
-				</ul>
-			</div>
+            <div id="articulos">
+                <ul id="lista">
+                </ul>
+            </div>
         
-			<hr>
-			<a id="nuevaPagina" href="http://localhost/new.html">Nueva Página</a>
-			<br>
-			<a href="http://localhost/acceso.html">Iniciar sesion con otro usuario</a>
-			<br>
-			<a href="http://localhost/index.html">Volver al Inicio</a>
+            <hr>
+            <a id="nuevaPagina" href="http://localhost/new.html">Nueva Página</a>
+            <br>
+            <a href="http://localhost/acceso.html">Iniciar sesion con otro usuario</a>
+            <br>
+            <a href="http://localhost/index.html">Volver al Inicio</a>
         </div>
-		<div id="result" class="hidden">
-			<div id="estructura" class="contenidoXML">
-				<h4>AVISO!</h4>
-				<pre id="content"></pre>
-			</div>
-		</div>
-	</body>
-	<script>
-		var parametros = new URLSearchParams(window.location.search);
-		var owner = parametros.get('owner');
+        <div id="result" class="hidden">
+            <div id="estructura" class="contenidoXML">
+                <h4>AVISO!</h4>
+                <pre id="content"></pre>
+            </div>
+        </div>
+    </body>
+    <script>
+        var parametros = new URLSearchParams(window.location.search);
+        var owner = parametros.get('owner');
 
-		document.getElementById("usuario").innerHTML = owner;
+        document.getElementById("usuario").innerHTML = owner;
 
-		var enlace = document.getElementById("nuevaPagina");
-		enlace.href = enlace.href + "?owner=" + owner;
+        var enlace = document.getElementById("nuevaPagina");
+        enlace.href = enlace.href + "?owner=" + owner;
 
-		document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-			// Hacer la solicitud AJAX
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function () {
-				if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-					// Procesar la respuesta XML
-					var xml = xmlhttp.responseXML;
-					var articles = xml.getElementsByTagName("article");
+            // Hacer la solicitud AJAX
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    // Procesar la respuesta XML
+                    var xml = xmlhttp.responseXML;
+                    var articles = xml.getElementsByTagName("article");
     
-					// Actualizar dinámicamente el contenido de la página
-					var lista = document.getElementById("lista");
+                    // Actualizar dinámicamente el contenido de la página
+                    var lista = document.getElementById("lista");
     
-					for (var i = 0; i < articles.length; i++) {
-						var article = articles[i];
-						var title = article.getElementsByTagName("title")[0].textContent;
+                    for (var i = 0; i < articles.length; i++) {
+                        var article = articles[i];
+                        var title = article.getElementsByTagName("title")[0].textContent;
     
-						var li = document.createElement("li");
-						var a = document.createElement("a");
-						var deleteForm = document.createElement("form");
-						var editForm = document.createElement("form");
-						var viewForm = document.createElement("form");
+                        var li = document.createElement("li");
+                        var a = document.createElement("a");
+                        var deleteForm = document.createElement("form");
+                        var editForm = document.createElement("form");
+                        var viewForm = document.createElement("form");
 
-						li.id = title;
+                        li.id = title;
     
-						a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
-						a.textContent = title;
+                        a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
+                        a.textContent = title;
     
-						deleteForm.action = "/cgi-bin/delete.pl";
-						deleteForm.method = "post";
-						deleteForm.id = "deleteForm";
-						var deleteOwner = document.createElement("input");
-						deleteOwner.type = "hidden";
-						deleteOwner.name = "owner";
-						deleteOwner.value = owner;
-						var deleteTitle = document.createElement("input");
-						deleteTitle.type = "hidden";
-						deleteTitle.name = "title";
-						deleteTitle.value = title;
-						var deleteButton = document.createElement("input");
-						deleteButton.type = "submit";
-						deleteButton.value = "X";
-						deleteForm.appendChild(deleteOwner);
-						deleteForm.appendChild(deleteTitle);
-						deleteForm.appendChild(deleteButton);
+                        deleteForm.action = "/cgi-bin/delete.pl";
+                        deleteForm.method = "post";
+                        deleteForm.id = "deleteForm";
+                        var deleteOwner = document.createElement("input");
+                        deleteOwner.type = "hidden";
+                        deleteOwner.name = "owner";
+                        deleteOwner.value = owner;
+                        var deleteTitle = document.createElement("input");
+                        deleteTitle.type = "hidden";
+                        deleteTitle.name = "title";
+                        deleteTitle.value = title;
+                        var deleteButton = document.createElement("input");
+                        deleteButton.type = "submit";
+                        deleteButton.value = "X";
+                        deleteForm.appendChild(deleteOwner);
+                        deleteForm.appendChild(deleteTitle);
+                        deleteForm.appendChild(deleteButton);
     
-						editForm.action = "edit.html";
-						editForm.method = "get";
-						editForm.id = "editForm";
-						var editOwner = document.createElement("input");
-						editOwner.type = "hidden";
-						editOwner.name = "owner";
-						editOwner.value = owner;
-						var editTitle = document.createElement("input");
-						editTitle.type = "hidden";
-						editTitle.name = "title";
-						editTitle.value = title;
-						var editButton = document.createElement("input");
-						editButton.type = "submit";
-						editButton.value = "E";
-						editForm.appendChild(editOwner);
-						editForm.appendChild(editTitle);
-						editForm.appendChild(editButton);
+                        editForm.action = "edit.html";
+                        editForm.method = "get";
+                        editForm.id = "editForm";
+                        var editOwner = document.createElement("input");
+                        editOwner.type = "hidden";
+                        editOwner.name = "owner";
+                        editOwner.value = owner;
+                        var editTitle = document.createElement("input");
+                        editTitle.type = "hidden";
+                        editTitle.name = "title";
+                        editTitle.value = title;
+                        var editButton = document.createElement("input");
+                        editButton.type = "submit";
+                        editButton.value = "E";
+                        editForm.appendChild(editOwner);
+                        editForm.appendChild(editTitle);
+                        editForm.appendChild(editButton);
 
-						viewForm.action = "/cgi-bin/article.pl";
-						viewForm.method = "post";
-						viewForm.id = "viewForm";
-						var viewOwner = document.createElement("input");
-						viewOwner.type = "hidden";
-						viewOwner.name = "owner";
-						viewOwner.value = owner;
-						var viewTitle = document.createElement("input");
-						viewTitle.type = "hidden";
-						viewTitle.name = "title";
-						viewTitle.value = title;
-						var viewButton = document.createElement("input");
-						viewButton.type = "submit";
-						viewButton.value = "V";
-						viewForm.appendChild(viewOwner);
-						viewForm.appendChild(viewTitle);
-						viewForm.appendChild(viewButton);
+                        viewForm.action = "/cgi-bin/article.pl";
+                        viewForm.method = "post";
+                        viewForm.id = "viewForm";
+                        var viewOwner = document.createElement("input");
+                        viewOwner.type = "hidden";
+                        viewOwner.name = "owner";
+                        viewOwner.value = owner;
+                        var viewTitle = document.createElement("input");
+                        viewTitle.type = "hidden";
+                        viewTitle.name = "title";
+                        viewTitle.value = title;
+                        var viewButton = document.createElement("input");
+                        viewButton.type = "submit";
+                        viewButton.value = "V";
+                        viewForm.appendChild(viewOwner);
+                        viewForm.appendChild(viewTitle);
+                        viewForm.appendChild(viewButton);
     
-						li.appendChild(a);
-						li.appendChild(deleteForm);
-						li.appendChild(editForm);
-						li.appendChild(viewForm);
+                        li.appendChild(a);
+                        li.appendChild(deleteForm);
+                        li.appendChild(editForm);
+                        li.appendChild(viewForm);
     
-						lista.appendChild(li);
-					}
-				}
-			};
+                        lista.appendChild(li);
+                    }
+                }
+            };
     
-			xmlhttp.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(owner), true);
-			xmlhttp.send();
-		});
+            xmlhttp.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(owner), true);
+            xmlhttp.send();
+        });
     
-		// Delegación de eventos en el contenedor "lista"
-		document.getElementById("lista").addEventListener("submit", function (event) {
-			var form = event.target;
-		
-			// Verificar si el formulario enviado es el formulario para eliminar
-			if (form.tagName === "FORM" && form.id === "deleteForm") {
-				event.preventDefault();
-		
-				var formData = new FormData(form);
-		
-				fetch(form.action, {
-					method: form.method,
-					body: formData
-				})
-				.then(response => response.text())
-				.then(xmlData => {
-					var parser = new DOMParser();
-					var xml = parser.parseFromString(xmlData, "text/xml");
+        // Delegación de eventos en el contenedor "lista"
+        document.getElementById("lista").addEventListener("submit", function (event) {
+            var form = event.target;
 
-					// Verificar si el XML contiene elemento <title>
-					var titleElement = xml.querySelector('title');
-					
-					if (titleElement) {
-						var titleValue = titleElement.textContent;
-						var eliminarArticulo = document.getElementById(titleValue);
+            // Verificar si el formulario enviado es el formulario para eliminar
+            if (form.tagName === "FORM" && form.id === "deleteForm") {
+                event.preventDefault();
 
-						var lista = document.getElementById("lista");
-						lista.removeChild(eliminarArticulo);
+                var formData = new FormData(form);
 
-						document.getElementById("content").textContent = "Se elimino correctamente el articulo " + titleValue;
-					} else {
-						document.getElementById("content").textContent = "Error al eliminar el articulo!";
-					}
-					document.getElementById("result").classList.remove("hidden");
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(xmlData => {
+                    var parser = new DOMParser();
+                    var xml = parser.parseFromString(xmlData, "text/xml");
 
-					setTimeout(function () {
-						document.getElementById("result").classList.add("hidden");
-					}, 5000);
-				});
-			
-			// Verificar si el formulario enviado es el formulario para ver el codigo MarckDown
-			} else if (form.tagName === "FORM" && form.id === "viewForm") {
-				event.preventDefault();
-		
-				var form = event.target;
-				var formData = new FormData(form);
-		
-				fetch(form.action, {
-					method: form.method,
-					body: formData
-				})
-				.then(response => response.text())
-				.then(xmlData => {
-					var parser = new DOMParser();
-					var xml = parser.parseFromString(xmlData, "text/xml");
+                    // Verificar si el XML contiene elemento <title>
+                    var titleElement = xml.querySelector('title');
 
-					var titleValue = xml.querySelector('title').textContent;
-					var textValue = xml.querySelector('text').textContent;
-					window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
-					
-				});
-			}
-		});
-	</script>
+                    if (titleElement) {
+                        var titleValue = titleElement.textContent;
+                        var eliminarArticulo = document.getElementById(titleValue);
+
+                        var lista = document.getElementById("lista");
+                        lista.removeChild(eliminarArticulo);
+
+                        document.getElementById("content").textContent = "Se elimino correctamente el articulo " + titleValue;
+                    } else {
+                        document.getElementById("content").textContent = "Error al eliminar el articulo!";
+                    }
+                    document.getElementById("result").classList.remove("hidden");
+
+                    setTimeout(function () {
+                        document.getElementById("result").classList.add("hidden");
+                    }, 5000);
+                });
+
+            // Verificar si el formulario enviado es el formulario para ver el codigo MarckDown
+            } else if (form.tagName === "FORM" && form.id === "viewForm") {
+                event.preventDefault();
+
+                var form = event.target;
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(xmlData => {
+                    var parser = new DOMParser();
+                    var xml = parser.parseFromString(xmlData, "text/xml");
+
+                    var titleValue = xml.querySelector('title').textContent;
+                    var textValue = xml.querySelector('text').textContent;
+                    window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
+                });
+            }
+        });
+    </script>
 </html>

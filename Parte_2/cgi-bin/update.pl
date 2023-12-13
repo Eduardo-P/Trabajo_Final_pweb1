@@ -29,7 +29,7 @@ $xml .= "</article>\n";
 $dbh->disconnect;
 
 # Crear el archivo XML
-open my $archivo, '>', "../htdocs/update.xml" or die "No se pudo abrir el archivo usuario.xml: $!";
+open my $archivo, '>', "../htdocs/update.xml" or die "No se pudo abrir el archivo update.xml: $!";
 print $archivo $xml;
 close $archivo;
 

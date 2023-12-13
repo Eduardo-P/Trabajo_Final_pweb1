@@ -28,7 +28,7 @@ my $xml = "<?xml version='1.0' encoding='utf-8'?>\n".
           "</article>\n";
 
 # Crear el archivo XML
-open my $archivo, '>', "../htdocs/article.xml" or die "No se pudo abrir el archivo usuario.xml: $!";
+open my $archivo, '>', "../htdocs/article.xml" or die "No se pudo abrir el archivo article.xml: $!";
 print $archivo $xml;
 close $archivo;
 

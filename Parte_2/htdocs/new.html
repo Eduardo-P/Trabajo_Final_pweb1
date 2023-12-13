@@ -1,149 +1,149 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8">
-		<title>New Web</title>
-		<style>
-			h1 {
-				text-align: center;
-				padding: 5px 0;
-				border-bottom: 1px solid silver;
-				font-size: 20px;
-			}
-			body {
-				background: #2980b9;
-				height: 100vh;
-			}
-			.center {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				max-width: 510px;
-				width: 100%;
-				background: white;
-				border-radius: 10px;
-			}
-			.center form {
-				padding: 0 30px;
-				box-sizing: border-box;
-			}
-			input[type="submit"] {
-				width: 80px;
-				height: 30px;
-				background: #2691d9;
-				border-radius: 25px;
-				font-size: 15px;
-				color: #e9f4fb;
-				font-weight: 700;
-				cursor: pointer;
-				outline: none;
-				transition: 0.5s;
-				border: none;
-			}
-			input[type="submit"]:hover {
-				background-color: #1E72AA;
-			}
-			label{
-				font: bold 50% Candara;
-				font-size: 20px;
-			}
-			#listPagina{
-				padding: 5px 30px;
-				font-size: 18px;
-			}
-			.hidden {
-				display: none;
-			}
-			.contenidoXML {
-				position: fixed;
-				font-size: 90%;
-				top: 11%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				background: black;
-				color: white;
-				border-radius: 10px;
-				padding: 15px;
-				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-			}
-			.contenidoXML h4 {
-				text-align: center;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="center">
-			<div id="usuario"></div>
-			<form id="new" method="post" action="/cgi-bin/new.pl">
-				<input type="hidden" name="owner" id="owner" value="">
-				<table>
-					<tr>
-   						<td> <h4><label for="titulo">Título:</label></h4> </td>
-						<td>
-							<input type="text" name="title" id="titulo" value="" size="52" style="padding-bottom: 10px"/>
-						</td>
- 					</tr>
-					<tr>
-						<td> <h4><label for="markdown">Texto:</label></h4> </td>
-						<td>
-							<textarea id="markdown" name="text" value="" size="90" rows="10" cols="50" style="padding-bottom: 10px"></textarea>
-						</td>
-					</tr>
-				</table>
-				<input type="submit" value="Enviar">
-			</form>
-			<p> <a id="listPagina" href="http://localhost/list.html"> Cancelar </a> </p>	
-		</div>
-		<div id="result" class="hidden">
-			<div id="estructura" class="contenidoXML">
-				<h4>AVISO!</h4>
-				<pre id="content"></pre>
-			</div>
-		</div>
-	</body>
-	<script>
-		var parametros = new URLSearchParams(window.location.search);
-		var owner = parametros.get('owner');
+    <head>
+        <meta charset="UTF-8">
+        <title>New Web</title>
+        <style>
+            h1 {
+                text-align: center;
+                padding: 5px 0;
+                border-bottom: 1px solid silver;
+                font-size: 20px;
+            }
+            body {
+                background: #2980b9;
+                height: 100vh;
+            }
+            .center {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                max-width: 510px;
+                width: 100%;
+                background: white;
+                border-radius: 10px;
+            }
+            .center form {
+                padding: 0 30px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                width: 80px;
+                height: 30px;
+                background: #2691d9;
+                border-radius: 25px;
+                font-size: 15px;
+                color: #e9f4fb;
+                font-weight: 700;
+                cursor: pointer;
+                outline: none;
+                transition: 0.5s;
+                border: none;
+            }
+            input[type="submit"]:hover {
+                background-color: #1E72AA;
+            }
+            label{
+                font: bold 50% Candara;
+                font-size: 20px;
+            }
+            #listPagina{
+                padding: 5px 30px;
+                font-size: 18px;
+            }
+            .hidden {
+                display: none;
+            }
+            .contenidoXML {
+                position: fixed;
+                font-size: 90%;
+                top: 11%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: black;
+                color: white;
+                border-radius: 10px;
+                padding: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
+            .contenidoXML h4 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <div id="usuario"></div>
+            <form id="new" method="post" action="/cgi-bin/new.pl">
+                <input type="hidden" name="owner" id="owner" value="">
+                <table>
+                    <tr>
+                        <td> <h4><label for="titulo">Título:</label></h4> </td>
+                        <td>
+                            <input type="text" name="title" id="titulo" value="" size="52" style="padding-bottom: 10px"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> <h4><label for="markdown">Texto:</label></h4> </td>
+                        <td>
+                            <textarea id="markdown" name="text" value="" size="90" rows="10" cols="50" style="padding-bottom: 10px"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" value="Enviar">
+            </form>
+            <p> <a id="listPagina" href="http://localhost/list.html"> Cancelar </a> </p>	
+        </div>
+        <div id="result" class="hidden">
+            <div id="estructura" class="contenidoXML">
+                <h4>AVISO!</h4>
+                <pre id="content"></pre>
+            </div>
+        </div>
+    </body>
+    <script>
+        var parametros = new URLSearchParams(window.location.search);
+        var owner = parametros.get('owner');
 
-		document.getElementById("usuario").innerHTML = owner;
-		document.getElementById("owner").value = owner;
+        document.getElementById("usuario").innerHTML = owner;
+        document.getElementById("owner").value = owner;
 
-		var enlace = document.getElementById("listPagina");
-		enlace.href = enlace.href + "?owner=" + owner;
+        var enlace = document.getElementById("listPagina");
+        enlace.href = enlace.href + "?owner=" + owner;
 
-		document.getElementById("new").addEventListener("submit", function(event) {
-			event.preventDefault();
+        document.getElementById("new").addEventListener("submit", function(event) {
+            event.preventDefault();
 
-			var form = event.target;
-			var formData = new FormData(form);
+            var form = event.target;
+            var formData = new FormData(form);
 
-			fetch(form.action, {
-				method: form.method,
-				body: formData
-			})
-			.then(response => response.text())
-			.then(xmlData => {
-				var parser = new DOMParser();
-				var xml = parser.parseFromString(xmlData, "text/xml");
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => response.text())
+            .then(xmlData => {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlData, "text/xml");
 
-				// Verificar si el XML contiene elementos <title> y <text>
-				var titleElement = xml.querySelector('title');
-				var textElement = xml.querySelector('text');
+                // Verificar si el XML contiene elementos <title> y <text>
+                var titleElement = xml.querySelector('title');
+                var textElement = xml.querySelector('text');
 
-				if (titleElement && textElement) {
-					var titleValue = titleElement.textContent;
-					var textValue = textElement.textContent;
-					window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
-				} else {
-					document.getElementById("content").textContent = "No se pudo guardar el artículo!";
-					document.getElementById("result").classList.remove("hidden");
+                if (titleElement && textElement) {
+                    var titleValue = titleElement.textContent;
+                    var textValue = textElement.textContent;
+                    window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
+                } else {
+                    document.getElementById("content").textContent = "No se pudo guardar el artículo!";
+                    document.getElementById("result").classList.remove("hidden");
 
-          			setTimeout(function () {
-						document.getElementById("result").classList.add("hidden");
-					}, 5000);
-				}
-			});
-		});
-	</script>
+                    setTimeout(function () {
+                        document.getElementById("result").classList.add("hidden");
+                    }, 5000);
+                }
+            });
+        });
+    </script>
 </html>

@@ -28,7 +28,7 @@ $xml .= "</article>\n";
 $dbh->disconnect;
 
 # Crear el archivo XML
-open my $archivo, '>', "../htdocs/delete.xml" or die "No se pudo abrir el archivo usuario.xml: $!";
+open my $archivo, '>', "../htdocs/delete.xml" or die "No se pudo abrir el archivo delete.xml: $!";
 print $archivo $xml;
 close $archivo;
 
