@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Wikipedia</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body class="landing is-preload">
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+				<!-- Header -->
+					<header id="header" class="alt">
+						<nav id="nav" >
+							<a id="login">Log In</a>
+						</nav>
+					</header>
+				<!-- Banner -->
+					<section id="banner">
+						<div class="inner">
+							<h2>THE NEW WIKI</h2>
+							<p>¡Bienvenido(a)!<br />
+							Esta página funciona de manera similar a Wikipedia, funciona como un conjunto de páginas<br />
+							a las que puedes acceder, leer, editar y eliminar en el momento que gustes.<br />
+							¡Además, puedes ir creando todas las páginas que desees!</p>
+							<a class="button primary" id="register">¡EMPEZAR!</a>
+						</div>
+					</section>
+			</div>
+			<div class="login" style="display: none;">
+				<h2 class="login-header">Inicia sesión</h2>
+				<form class="login-container" method="post" id="loginForm" action="/cgi-bin/login.pl">
+				 	<p><input type="text" name="owner" placeholder="Usuario"></p>
+				  	<p><input type="password" name="password" placeholder="Password"></p>
+				  	<p><input type="submit" value="Login"></p>
+				</form>
+			</div>
+			<div id="result" class="hidden">
+				<div id="estructura" class="content">
+					<h4>¡AVISO!</h4>
+					<pre id="content"></pre>
+				</div>
+			</div>
+	</body>
+	<!-- Scripts -->
+	<script>
+		(function () {
+			var $window = window,
+				$body = document.body,
+				$banner = document.getElementById('banner'),
+				$header = document.getElementById('header'),
+				$loginLink = document.getElementById('login');
+				$loginForm = document.querySelector('.login');
+
+			// Animaciones del inicio
+			$window.addEventListener('DOMContentLoaded', function () {
+				window.setTimeout(function () {
+					$body.classList.remove('is-preload');
+				}, 100);
+			});
+
+			// Función para mostrar u ocultar el formulario de inicio de sesión
+			function toggleLoginForm() {
+				$loginForm.style.display = ($loginForm.style.display === 'block') ? 'none' : 'block';
+			}
+
+			// Evento de clic en el enlace de inicio de sesión
+			$loginLink.addEventListener('click', toggleLoginForm);
+
+			// Evento de clic en el cuerpo para cerrar la ventana al hacer clic fuera de ella
+			document.addEventListener('click', function (event) {
+				if (!$loginForm.contains(event.target) && event.target !== $loginLink) {
+					$loginForm.style.display = 'none';
+				}
+			});
+        })();
+    </script>
+	<script>
+		function handleSubmit(event, formId) {
+			event.preventDefault();
+
+			var form = event.target;
+			var formData = new FormData(form);
+
+			fetch(form.action, {
+				method: form.method,
+				body: formData
+			})
+			.then(response => response.text())
+			.then(xmlData => {
+				var parser = new DOMParser();
+				var xml = parser.parseFromString(xmlData, "text/xml");
+
+				// Verificar si el XML contiene elemento <owner>
+				var ownerElement = xml.querySelector('owner');
+
+				if (ownerElement) {
+					var ownerValue = ownerElement.textContent;
+					window.location.href = "list.html?owner=" + encodeURIComponent(ownerValue);
+				} else {
+					if (formId == "loginForm") {
+						document.getElementById("content").textContent = "¡Error al ingresar al usuario!";
+					/*
+					} else {
+						document.getElementById("content").textContent = "¡Error al registrar el nuevo usuario!";
+					}
+					document.getElementById("result").classList.remove("hidden");
+					*/
+					}
+					setTimeout(function () {
+						document.getElementById("result").classList.add("hidden");
+					}, 5000);
+				}
+			});
+		}
+		document.getElementById("loginForm").addEventListener("submit", function(event) {
+			handleSubmit(event, "loginForm");
+		});
+		/*
+		document.getElementById("signupForm").addEventListener("submit", function(event) {
+			handleSubmit(event, "signupForm");
+		*/
+	</script>
+</html>
