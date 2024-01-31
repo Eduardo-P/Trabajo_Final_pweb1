@@ -4,30 +4,39 @@
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
 }
 
-	body {
-		color: #fff;
-		font-family: "Open Sans", Helvetica, sans-serif;
-		font-size: 15pt;
-		font-weight: 400;
-		letter-spacing: 0.075em;
-		line-height: 1.65em;
-	}
+.shadow {
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+	background-color: rgba(0, 0, 0, 0.7);
+}
 
-	a {
+.pagina {
+	color: #fff;
+	font-family: "Open Sans", Helvetica, sans-serif;
+	z-index: 4;
+	font-size: 15pt;
+	font-weight: 400;
+	letter-spacing: 0.075em;
+	line-height: 1.65em;
+}
+	.pagina a {
 		text-decoration: none;
 		cursor: pointer;
 	}
 
-	p {
+	.pagina p {
 		margin: 0 0 2em 0;
 	}
 
-	h2 {
+	.pagina h2 {
 		color: #fff;
 		font-weight: 800;
 		letter-spacing: 0.225em;
@@ -38,136 +47,247 @@
 		line-height: 1.75em;
 	}
 
-/* Login */
+/* FORMULARIO DE ACCESO */
 
-.login {
+.access {
 	position: fixed;
-	top: 145px;
-	right: -140px;
-	transform: translate(-50%, -50%);
-	z-index: 10;
-	width: 300px;
-	margin: 16px auto;
-	font-size: 60%;
-	background: rgb(78, 78, 78);
-	border-radius: 15px;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .login-container {
-	background: #585858;
-	padding: 14px;
-	border-bottom-left-radius: 15px;
-  	border-bottom-right-radius: 15px;
-  }
-  
-  .login-header,
-  .login p {
-	font-family: "Helvetica Neue", sans-serif;
-	margin-top: 0;
-	margin-bottom: 0;
-  }
-  
-  .login-header {
-	background: rgb(37, 40, 44);
-	padding: 15px;
-	font-size: 1.7em;
-	font-weight: bolder;
-	text-align: center;
-	text-transform: uppercase;
-	color: #fff;
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
-  }
-  
-  .login p {
-	padding: 9px;
-  }
-  
-  .login input {
-	box-sizing: border-box;
-	display: block;
-	height: 50px;
+	top: 50%;
+	left: 50%;
 	width: 100%;
-	border-width: 1px;
-	border-style: solid;
-	padding: 10px;
-	outline: 0;
-	font-family: inherit;
-	font-size: 20px;
-	border-radius: 5px;
-  }
-  
-  .login input[type="text"],
-  .login input[type="password"] {
-	height: 45px;
-	font-size: 15px;
-	background: #fff;
-	border-color: #bbb;
-	color: #555;
-  }
-  
-  .login input[type="text"]:focus,
-  .login input[type="password"]:focus {
-	border-color: #888;
-  }
-  
-  .login input[type="submit"] {
-	padding: 0%;
+	right: 329px;
+	transform: translate(-50%, -50%);
+	z-index: 20;
 	margin: auto;
-	width: 80px;
-	height: 40px;
-	background: #17c;
-	border-color: transparent;
-	color: #fff;
-	cursor: pointer;
-	font-size: 15px;
-	font-weight: bold;
-	border-radius: 5px;
-	box-sizing: border-box;
-  }
-  
-  .login input[type="submit"]:hover {
-	background: rgb(77, 146, 202);
-  }
-  
-  .login input[type="submit"]:focus {
-	border-color: #05a;
-  }
+    color: #6a6f8c;
+    max-width: 525px;
+	height: 700px;
+	background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+	background-size: cover;
+	font: 600 16px/18px 'Open Sans', sans-serif;
+}
+
+	.access :after,
+	.access :before {
+		box-sizing: border-box
+	}
+
+	.access .clearfix:after,
+	.access .clearfix:before {
+		content: '';
+		display: table
+	}
+
+	.access .clearfix:after {
+		clear: both;
+		display: block
+	}
+
+	.acccess .login-wrap {
+		margin: auto;
+		position: relative;
+		background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+		background-size: cover;
+		box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+	}
+
+		.access .login-wrap a {
+			color: inherit;
+			text-decoration: none
+		}
+
+	.access .login-html {
+		width: 100%;
+		left: -1px;
+		max-width: 386px;
+		height: 560px;
+		position: absolute;
+		padding: 55px 70px 85px 70px;
+		background: rgba(22, 30, 52, 0.9);
+	}
+
+		.access .login-html .sign-in-htm,
+		.access .login-html .sign-up-htm {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			position: absolute;
+			transform: rotateY(180deg);
+			backface-visibility: hidden;
+			transition: all .4s linear;
+		}
+
+		.access .login-html .sign-in,
+		.access .login-html .sign-up,
+		.access .login-form .group .check {
+			display: none;
+		}
+
+		.access .login-html .tab,
+		.access .login-form .group .label,
+		.access .login-form .group .button {
+			text-transform: uppercase;
+		}
+
+		.access .login-html .tab {
+			font-size: 22px;
+			padding-top: 30px;
+			padding-bottom: 5px;
+			margin: 0 15px 25px 18%;
+			display: inline-block;
+			cursor: pointer;
+			border-bottom: 2px solid transparent;
+			text-align: center;
+		}
+
+		.access .login-html .sign-in:checked+.tab,
+		.access .login-html .sign-up:checked+.tab {
+			color: #fff;
+			border-color: #1161ee;
+		}
+
+
+	.access .login-form {
+		min-height: 345px;
+		width: 345px;
+		position: relative;
+		perspective: 1000px;
+		transform-style: preserve-3d;
+	}
+
+		.access .login-form .group {
+			margin-bottom: 15px;
+		}
+
+		.access .login-form .group .label,
+		.access .login-form .group .input,
+		.access .login-form .group .button {
+			width: 100%;
+			color: #fff;
+			display: block;
+		}
+
+		.access .login-form .group .input,
+		.access .login-form .group .button {
+			border: none;
+			padding: 15px 20px;
+			border-radius: 25px;
+			background: rgba(255, 255, 255, .1);
+		}
+
+		.access .login-form .group .input {
+			height: 23px;
+		}
+
+		.access .login-form .group input[data-type="password"] {
+			-webkit-text-security: circle;
+			color: #ffffff;
+			font-size: 18px;
+			letter-spacing: 3px;
+		}
+
+		.access .login-form .group .label {
+			color: #aaa;
+			font-size: 12px;
+		}
+
+		.access .login-form .group .button {
+			background: #1161ee;
+			margin-top: 35px;
+			margin-left: 45px;
+			margin-bottom: -20px;
+			width: 300px;
+			cursor: pointer;
+		}
+
+		.access .login-form .group label .icon {
+			width: 15px;
+			height: 15px;
+			border-radius: 2px;
+			position: relative;
+			display: inline-block;
+			background: rgba(255, 255, 255, .1);
+		}
+
+		.access .login-form .group label .icon:before,
+		.access .login-form .group label .icon:after {
+			content: '';
+			width: 10px;
+			height: 2px;
+			background: #fff;
+			position: absolute;
+			transition: all .2s ease-in-out 0s;
+		}
+
+		.access .login-form .group label .icon:before {
+			left: 3px;
+			width: 5px;
+			bottom: 6px;
+			transform: scale(0) rotate(0);
+		}
+
+		.access .login-form .group label .icon:after {
+			top: 6px;
+			right: 0;
+			transform: scale(0) rotate(0);
+		}
+
+		.access .login-form .group .check:checked+label {
+			color: #fff;
+		}
+
+		.access .login-form .group .check:checked+label .icon {
+			background: #1161ee;
+		}
+
+		.access .login-form .group .check:checked+label .icon:before {
+			transform: scale(1) rotate(45deg);
+		}
+
+		.access .login-form .group .check:checked+label .icon:after {
+			transform: scale(1) rotate(-45deg);
+		}
+
+	.access .login-html .sign-in:checked+.tab+.sign-up+.tab+.login-form .sign-in-htm {
+		transform: rotate(0);
+	}
+
+	.access .login-html .sign-up:checked+.tab+.login-form .sign-up-htm {
+		transform: rotate(0);
+	}
+
+	.access .hr {
+		height: 2px;
+		margin: 60px 0 35px 35px;
+		background: rgba(255, 255, 255, .2);
+	}
+
+	.access .foot-lnk {
+		padding-left: 40px;
+		text-align: center;
+	}
 
 /* Button */
 
-	.button {
-		-webkit-appearance: none;
-		appearance: none;
-		-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-		background-color: transparent;
-		border-radius: 3px;
-		border: 0;
-		box-shadow: inset 0 0 0 2px #fff;
-		color: #fff;
-		display: inline-block;
-		font-size: 0.8em;
-		font-weight: 600;
-		height: 3.125em;
-		letter-spacing: 0.225em;
-		line-height: 3.125em;
-		margin-left: -10px;
-		max-width: 30em;
-		padding: 0 2.75em;
-		text-align: center;
-		text-decoration: none;
-		text-transform: uppercase;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
 		.button.primary {
+			border: 0;
+			text-decoration: none;
+			text-transform: uppercase;
+			height: 3.125em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			font-size: 0.8em;
+			font-weight: 600;
+			letter-spacing: 0.225em;
+			border-radius: 3px;
+			line-height: 3.125em;
+			display: inline-block;
+			max-width: 30em;
+			padding: 0 2em;
 			background-color: #ed4933;
 			box-shadow: none !important;
 			color: #ffffff !important;
+			z-index: 50;
 		}
 
 			.button.primary:hover {
@@ -198,7 +318,7 @@
 			position: absolute;
 			right: 0;
 			top: 15px;
-			z-index: 3;
+			z-index: 10;
 		}
 			#header nav > a {
 				border: 0;
@@ -315,26 +435,10 @@
 
 /* Mensajito de error */
 
-.content {
-	position: fixed;
-	font-size: 90%;
-	top: 11%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: rgb(21, 21, 21);
-	color: white;
-	border-radius: 10px;
-	border: 2px solid rgb(184, 135, 37);
-	padding: 15px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.content h4 {
+pre {
+    display: block;
+    font-family: monospace;
 	text-align: center;
-	color: #eb341c;
-	font-weight: bold;
-	font-size: 20px;
-	font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .hidden {

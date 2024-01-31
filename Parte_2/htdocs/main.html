@@ -8,11 +8,12 @@
 	</head>
 	<body class="landing is-preload">
 		<!-- Page Wrapper -->
-			<div id="page-wrapper">
+		<div id="main-page">
+			<div id="page-wrapper" class="pagina">
 				<!-- Header -->
 					<header id="header" class="alt">
 						<nav id="nav" >
-							<a id="login">Log In</a>
+							<a id="login">LogIn</a>
 						</nav>
 					</header>
 				<!-- Banner -->
@@ -23,34 +24,90 @@
 							Esta página funciona de manera similar a Wikipedia, funciona como un conjunto de páginas<br />
 							a las que puedes acceder, leer, editar y eliminar en el momento que gustes.<br />
 							¡Además, puedes ir creando todas las páginas que desees!</p>
-							<a class="button primary" id="register">¡EMPEZAR!</a>
+							<a class="button primary" id="register" for="tab-2">¡EMPEZAR!</a>
 						</div>
 					</section>
 			</div>
-			<div class="login" style="display: none;">
-				<h2 class="login-header">Inicia sesión</h2>
-				<form class="login-container" method="post" id="loginForm" action="/cgi-bin/login.pl">
-				 	<p><input type="text" name="owner" placeholder="Usuario"></p>
-				  	<p><input type="password" name="password" placeholder="Password"></p>
-				  	<p><input type="submit" value="Login"></p>
-				</form>
-			</div>
-			<div id="result" class="hidden">
-				<div id="estructura" class="content">
-					<h4>¡AVISO!</h4>
-					<pre id="content"></pre>
+		</div>
+		<!-- Ventana de acceso -->
+		<div class="access" style="display: none;">
+			<div class="login-wrap">
+				<div class="login-html">
+					<pre id="content" class="hidden"></pre>
+					<input id="tab-1" type="radio" name="tab" class="sign-in" checked>
+					<label for="tab-1" class="tab">Log In</label>
+					<input id="tab-2" type="radio" name="tab" class="sign-up">
+					<label for="tab-2" class="tab">Sign Up</label>
+					<div class="login-form">
+						<div class="sign-in-htm">
+							<!-- Ventana de login -->
+							<form action="/cgi-bin/login.pl" id="loginForm" method="post">
+								<div class="group">
+									<label for="user-login" class="label">Username</label>
+									<input id="user-login" type="text" class="input" name="owner">
+								</div>
+								<div class="group">
+									<label for="pass-login" class="label">Password</label>
+									<input id="pass-login" class="input" data-type="password" name="password">
+								</div>
+								<div class="group">
+									<input id="show-login" type="checkbox" class="check" onclick="togglePassword()">
+									<label for="show-login"><span class="icon"></span> Mostrar Contraseña</label>
+								</div>
+								<div class="group">
+									<input type="submit" class="button" value="Log In">
+								</div>
+								<div class="hr"></div>
+								<div class="foot-lnk">
+									<label style="cursor: pointer" for="tab-2">¿Aún no estás registrado?</label>
+								</div>
+							</form>
+						</div>
+						<div class="sign-up-htm">
+							<!-- Ventana de register -->
+							<form action="/cgi-bin/register.pl" id="signupForm" method="post">
+								<div class="group">
+									<label for="user-signup" class="label">Username</label>
+									<input id="user-signup" type="text" class="input" name="owner">
+								</div>
+								<div class="group">
+									<label for="pass-signup" class="label">Password</label>
+									<input id="pass-signup" class="input" data-type="password" name="password">
+								</div>
+								<div class="group">
+									<label for="firstName" class="label">Nombre</label>
+									<input id="firstName" type="text" class="input" name="firstName">
+								</div>
+								<div class="group">
+									<label for="lastName" class="label">Apellido</label>
+									<input id="lastName" type="text" class="input" name="lastName">
+								</div>
+								<div class="group">
+									<input type="submit" class="button" value="Sign Up">
+								</div>
+								<div class="hr"></div>
+								<div class="foot-lnk">
+									<label style="cursor: pointer" for="tab-1">¿Ya estás registrado?</label>
+								</div>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
+		</div>
+		<div id="screen" class="shadow" style="display: none;"></div>
 	</body>
+
 	<!-- Scripts -->
+
+	<!-- INICIO DE LA PAGINA WEB -->
+
 	<script>
 		(function () {
 			var $window = window,
 				$body = document.body,
 				$banner = document.getElementById('banner'),
-				$header = document.getElementById('header'),
-				$loginLink = document.getElementById('login');
-				$loginForm = document.querySelector('.login');
+				$header = document.getElementById('header');
 
 			// Animaciones del inicio
 			$window.addEventListener('DOMContentLoaded', function () {
@@ -58,23 +115,55 @@
 					$body.classList.remove('is-preload');
 				}, 100);
 			});
-
-			// Función para mostrar u ocultar el formulario de inicio de sesión
-			function toggleLoginForm() {
-				$loginForm.style.display = ($loginForm.style.display === 'block') ? 'none' : 'block';
-			}
-
-			// Evento de clic en el enlace de inicio de sesión
-			$loginLink.addEventListener('click', toggleLoginForm);
-
-			// Evento de clic en el cuerpo para cerrar la ventana al hacer clic fuera de ella
-			document.addEventListener('click', function (event) {
-				if (!$loginForm.contains(event.target) && event.target !== $loginLink) {
-					$loginForm.style.display = 'none';
-				}
-			});
         })();
     </script>
+
+	<!-- MOSTRAR CONTRASEÑA -->
+
+	<script>
+		function togglePassword() {
+			var passwordInput = document.getElementById("pass-login");
+			var checkbox = document.getElementById("show-login");
+			passwordInput.dataset.type = checkbox.checked ? "text" : "password";
+		}
+	</script>
+	
+	<!-- OCULTAR O MOSTRAR EL CONTENIDO DE ACCESO -->
+	<script>
+		$startLink = document.getElementById('register');
+		$loginLink = document.getElementById('login');
+		$accessForm = document.querySelector('.access');
+		$screen = document.querySelector('.shadow');
+
+		function toggleAccessForm() {
+			var pageWrapper = document.getElementById('screen');
+			$accessForm.style.display = ($accessForm.style.display === 'block') ? 'none' : 'block';
+			$screen.style.display = ($screen.style.display === 'block') ? 'none' : 'block';
+
+			// Mostrar la pestaña correspondiente al hacer clic en el enlace
+			if (this.id === 'login') {
+				var tab1 = document.getElementById("tab-1");
+				tab1.checked = true; // Marcar la pestaña de login como activa
+			} else if (this.id === 'register') {
+				var tab2 = document.getElementById("tab-2");
+				tab2.checked = true; // Marcar la pestaña de registro como activa
+			}
+		}
+
+		$loginLink.addEventListener('click', toggleAccessForm);
+		$startLink.addEventListener('click', toggleAccessForm);
+
+		document.addEventListener('click', function (event) {
+			var pageWrapper = document.getElementById('screen');
+			if (!$accessForm.contains(event.target) && event.target !== $loginLink && event.target !== $startLink) {
+				$accessForm.style.display = 'none';
+				$screen.style.display = 'none';
+			}
+		});
+	</script>
+		
+	<!-- SCRIPT PARA VERIFICAR EL XML CREADO DESDE PERL -->
+	
 	<script>
 		function handleSubmit(event, formId) {
 			event.preventDefault();
@@ -99,16 +188,13 @@
 					window.location.href = "list.html?owner=" + encodeURIComponent(ownerValue);
 				} else {
 					if (formId == "loginForm") {
-						document.getElementById("content").textContent = "¡Error al ingresar al usuario!";
-					/*
+						document.getElementById("content").textContent = "¡Usuario y/o contraseña incorrectos!";
 					} else {
 						document.getElementById("content").textContent = "¡Error al registrar el nuevo usuario!";
 					}
-					document.getElementById("result").classList.remove("hidden");
-					*/
-					}
+					document.getElementById("content").classList.remove("hidden");
 					setTimeout(function () {
-						document.getElementById("result").classList.add("hidden");
+						document.getElementById("content").classList.add("hidden");
 					}, 5000);
 				}
 			});
@@ -116,9 +202,8 @@
 		document.getElementById("loginForm").addEventListener("submit", function(event) {
 			handleSubmit(event, "loginForm");
 		});
-		/*
 		document.getElementById("signupForm").addEventListener("submit", function(event) {
 			handleSubmit(event, "signupForm");
-		*/
+		});
 	</script>
 </html>
