@@ -1,89 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Lista Paginas Web</title>
-        <style>
-            ul {
-                margin-left: -20px;
-                font: Candara;
-                font-size: 18px;
-            }
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Lista Paginas Web</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="paginas.css" />
+	</head>
+	<body class="is-preload">
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="main.html">The New Wiki</a></h1>
+					</header>
+				<!-- Main -->
+					<article id="main">
+						<header>
+							<h2>Bienvenido(a) de nuevo</h2>
+							<h2 id="usuario"></h2>
+							<p>¡Puedes crear todas las páginas que quieras!</p>
+							<a href="#crear" class="button">Ir a la lista</a>
+						</header>
+						<section class="wrapper style5">
+							<div class="inner">
+								<section>
+									<h5>¿Qué es el lenguaje MarkDown?</h5>
+									<p>Markdown es un lenguaje de marcado ligero que permite escribir texto 
+										con formato utilizando una sintaxis sencilla y legible. Es especialmente 
+										útil para crear contenido web, como páginas de documentación, blogs o mensajes 
+										en foros. Con Markdown, puedes agregar fácilmente encabezados, listas, enlaces, 
+										imágenes y otros elementos de formato básico sin necesidad de aprender HTML complejo. 
+										Su simplicidad lo hace popular entre desarrolladores, escritores y cualquier persona 
+										que necesite crear contenido con formato de manera rápida y sencilla. Si quieres
+										aprender sobre este lenguaje, puedes seguir este <a href="https://www.markdowntutorial.com/">tutorial</a>.</p>
+									<hr />
+									<h5>¿Por qué es importante usar el lenguaje Markdown?</h5>
+									<p>Es importante usar Markdown porque simplifica la creación de contenido web al 
+										ofrecer una sintaxis sencilla y legible, permitiendo a cualquier persona dar 
+										formato a su contenido de manera rápida y sin complicaciones. Si necesitas una
+										guía sobre Markdown, puedes hacer click <a href="https://markdown.es/sintaxis-markdown/">aquí</a>.</p>
+									<blockquote>"En un mundo web lleno de etiquetas HTML, Markdown es como tomar un respiro de aire fresco en el parque."</blockquote>
+									<hr />
+								</section>
 
-            li {
-                margin-bottom: 10px;
-                display: flex;
-                align-items: center;
-            }
-            h1 {
-                text-align: center;
-                padding: 5px 0;
-                border-bottom: 1px solid silver;
-                font-size: 20px;
-            }
-            body {
-                background: #2980b9;
-                height: 100vh;
-            }
-            .center {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                max-width: 510px;
-                width: 100%;
-                background: white;
-                border-radius: 10px;
-            }
-            a{
-                padding: 0 20px;
-                font-size: 18px;
-            }
-            .hidden {
-                display: none;
-            }
-            .contenidoXML {
-                position: fixed;
-                font-size: 90%;
-                top: 11%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: black;
-                color: white;
-                border-radius: 10px;
-                padding: 15px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            }
-            .contenidoXML h4 {
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="center">
-            <h1>Nuestras páginas de wiki</h1>
-            <div id="usuario"></div>
-
-            <div id="articulos">
-                <ul id="lista">
-                </ul>
-            </div>
-        
-            <hr>
-            <a id="nuevaPagina" href="http://localhost/new.html">Nueva Página</a>
-            <br>
-            <a href="http://localhost/acceso.html">Iniciar sesion con otro usuario</a>
-            <br>
-            <a href="http://localhost/index.html">Volver al Inicio</a>
-        </div>
-        <div id="result" class="hidden">
-            <div id="estructura" class="contenidoXML">
-                <h4>AVISO!</h4>
-                <pre id="content"></pre>
-            </div>
-        </div>
-    </body>
-    <script>
+								<section>
+									<h4 id="crear" >Lista de páginas creadas</h4>
+									<!--AQUI SE GENERAN LA TABLA Y LAS PAGINAS -->
+									<div id="articulos" class="table-wrapper">
+										<table id="lista">
+										</table>
+										<ul class="actions">
+											<li><a id="nuevaPagina" href="http://localhost/new.html" class="button primary">Crear nueva página</a></li>
+										</ul>
+									</div>
+								</section>
+							</div>
+						</section>
+					</article>
+			</div>
+			<div id="result" class="hidden">
+				<div id="estructura" class="contenidoXML">
+					<h4>AVISO!</h4>
+					<pre id="content"></pre>
+				</div>
+			</div>
+	</body>
+	<script>
         var parametros = new URLSearchParams(window.location.search);
         var owner = parametros.get('owner');
 
@@ -94,99 +76,125 @@
 
         document.addEventListener("DOMContentLoaded", function () {
 
-            // Hacer la solicitud AJAX
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    // Procesar la respuesta XML
-                    var xml = xmlhttp.responseXML;
-                    var articles = xml.getElementsByTagName("article");
-    
-                    // Actualizar dinámicamente el contenido de la página
-                    var lista = document.getElementById("lista");
-    
-                    for (var i = 0; i < articles.length; i++) {
-                        var article = articles[i];
-                        var title = article.getElementsByTagName("title")[0].textContent;
-    
-                        var li = document.createElement("li");
-                        var a = document.createElement("a");
-                        var deleteForm = document.createElement("form");
-                        var editForm = document.createElement("form");
-                        var viewForm = document.createElement("form");
+        // Hacer la solicitud AJAX
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+				// Procesar la respuesta XML
+				var xml = xmlhttp.responseXML;
+				var articles = xml.getElementsByTagName("article");
 
-                        li.id = title;
-    
-                        a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
-                        a.textContent = title;
-    
-                        deleteForm.action = "/cgi-bin/delete.pl";
-                        deleteForm.method = "post";
-                        deleteForm.id = "deleteForm";
-                        var deleteOwner = document.createElement("input");
-                        deleteOwner.type = "hidden";
-                        deleteOwner.name = "owner";
-                        deleteOwner.value = owner;
-                        var deleteTitle = document.createElement("input");
-                        deleteTitle.type = "hidden";
-                        deleteTitle.name = "title";
-                        deleteTitle.value = title;
-                        var deleteButton = document.createElement("input");
-                        deleteButton.type = "submit";
-                        deleteButton.value = "X";
-                        deleteForm.appendChild(deleteOwner);
-                        deleteForm.appendChild(deleteTitle);
-                        deleteForm.appendChild(deleteButton);
-    
-                        editForm.action = "edit.html";
-                        editForm.method = "get";
-                        editForm.id = "editForm";
-                        var editOwner = document.createElement("input");
-                        editOwner.type = "hidden";
-                        editOwner.name = "owner";
-                        editOwner.value = owner;
-                        var editTitle = document.createElement("input");
-                        editTitle.type = "hidden";
-                        editTitle.name = "title";
-                        editTitle.value = title;
-                        var editButton = document.createElement("input");
-                        editButton.type = "submit";
-                        editButton.value = "E";
-                        editForm.appendChild(editOwner);
-                        editForm.appendChild(editTitle);
-                        editForm.appendChild(editButton);
+				// Actualizar dinámicamente el contenido de la página
+				var table = document.getElementById("lista");
 
-                        viewForm.action = "/cgi-bin/article.pl";
-                        viewForm.method = "post";
-                        viewForm.id = "viewForm";
-                        var viewOwner = document.createElement("input");
-                        viewOwner.type = "hidden";
-                        viewOwner.name = "owner";
-                        viewOwner.value = owner;
-                        var viewTitle = document.createElement("input");
-                        viewTitle.type = "hidden";
-                        viewTitle.name = "title";
-                        viewTitle.value = title;
-                        var viewButton = document.createElement("input");
-                        viewButton.type = "submit";
-                        viewButton.value = "V";
-                        viewForm.appendChild(viewOwner);
-                        viewForm.appendChild(viewTitle);
-                        viewForm.appendChild(viewButton);
-    
-                        li.appendChild(a);
-                        li.appendChild(deleteForm);
-                        li.appendChild(editForm);
-                        li.appendChild(viewForm);
-    
-                        lista.appendChild(li);
-                    }
-                }
-            };
-    
-            xmlhttp.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(owner), true);
-            xmlhttp.send();
-        });
+				// Crear la cabecera de la tabla si no existe
+				if (!table.querySelector("thead")) {
+					var thead = document.createElement("thead");
+					var headerRow = document.createElement("tr");
+					var headers = ["Título", "Eliminar", "Editar", "Ver"];
+
+					headers.forEach(function (headerText) {
+						var th = document.createElement("th");
+						th.textContent = headerText;
+						headerRow.appendChild(th);
+					});
+
+					thead.appendChild(headerRow);
+					table.appendChild(thead);
+				}
+
+				var tbody = table.querySelector("tbody");
+
+				// Crear el cuerpo de la tabla si no existe
+				if (!tbody) {
+					tbody = document.createElement("tbody");
+					table.appendChild(tbody);
+				}
+
+				for (var i = 0; i < articles.length; i++) {
+					var article = articles[i];
+					var title = article.getElementsByTagName("title")[0].textContent;
+
+					var tr = document.createElement("tr");
+					var linkCell = document.createElement("td");
+					var deleteCell = document.createElement("td");
+					var editCell = document.createElement("td");
+					var viewCell = document.createElement("td");
+
+					var a = document.createElement("a");
+					a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
+					a.textContent = title;
+					linkCell.appendChild(a);
+
+					var deleteForm = document.createElement("form");
+					deleteForm.action = "/cgi-bin/delete.pl";
+					deleteForm.method = "post";
+					var deleteOwner = document.createElement("input");
+					deleteOwner.type = "hidden";
+					deleteOwner.name = "owner";
+					deleteOwner.value = owner;
+					var deleteTitle = document.createElement("input");
+					deleteTitle.type = "hidden";
+					deleteTitle.name = "title";
+					deleteTitle.value = title;
+					var deleteButton = document.createElement("input");
+					deleteButton.type = "submit";
+					deleteButton.value = "Eliminar";
+					deleteForm.appendChild(deleteOwner);
+					deleteForm.appendChild(deleteTitle);
+					deleteForm.appendChild(deleteButton);
+					deleteCell.appendChild(deleteForm);
+
+					var editForm = document.createElement("form");
+					editForm.action = "edit.html";
+					editForm.method = "get";
+					var editOwner = document.createElement("input");
+					editOwner.type = "hidden";
+					editOwner.name = "owner";
+					editOwner.value = owner;
+					var editTitle = document.createElement("input");
+					editTitle.type = "hidden";
+					editTitle.name = "title";
+					editTitle.value = title;
+					var editButton = document.createElement("input");
+					editButton.type = "submit";
+					editButton.value = "Editar";
+					editForm.appendChild(editOwner);
+					editForm.appendChild(editTitle);
+					editForm.appendChild(editButton);
+					editCell.appendChild(editForm);
+
+					var viewForm = document.createElement("form");
+					viewForm.action = "/cgi-bin/article.pl";
+					viewForm.method = "post";
+					var viewOwner = document.createElement("input");
+					viewOwner.type = "hidden";
+					viewOwner.name = "owner";
+					viewOwner.value = owner;
+					var viewTitle = document.createElement("input");
+					viewTitle.type = "hidden";
+					viewTitle.name = "title";
+					viewTitle.value = title;
+					var viewButton = document.createElement("input");
+					viewButton.type = "submit";
+					viewButton.value = "Ver";
+					viewForm.appendChild(viewOwner);
+					viewForm.appendChild(viewTitle);
+					viewForm.appendChild(viewButton);
+					viewCell.appendChild(viewForm);
+
+					tr.appendChild(linkCell);
+					tr.appendChild(deleteCell);
+					tr.appendChild(editCell);
+					tr.appendChild(viewCell);
+
+					tbody.appendChild(tr);
+				}
+			}
+		};
+		xmlhttp.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(owner), true);
+					xmlhttp.send();
+				});
     
         // Delegación de eventos en el contenedor "lista"
         document.getElementById("lista").addEventListener("submit", function (event) {
@@ -217,7 +225,7 @@
                         var lista = document.getElementById("lista");
                         lista.removeChild(eliminarArticulo);
 
-                        document.getElementById("content").textContent = "Se elimino correctamente el articulo " + titleValue;
+                        document.getElementById("content").textContent = "Se eliminó correctamente el articulo " + titleValue;
                     } else {
                         document.getElementById("content").textContent = "Error al eliminar el articulo!";
                     }
@@ -250,5 +258,5 @@
                 });
             }
         });
-    </script>
+</script>
 </html>
