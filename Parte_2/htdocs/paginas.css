@@ -1032,10 +1032,20 @@ input, select, textarea {
 		border: 1px solid #c3e6cb;
 		border-radius: 4px;
 		padding: 10px;
+		padding: 10px 10px 20px 30px;
 		margin-bottom: 20px;
+		color: black;
+	}
+
+	.contenidoXML h4{
+		color: black;
 	}
 	
 	.hidden {
 		display: none;
 	}
+	#content {
+		color: #1a1f24;
+	}
+	
 	

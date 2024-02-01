@@ -47,7 +47,7 @@
 									<h4 id="crear" >Lista de páginas creadas</h4>
 									<!--AQUI SE GENERAN LA TABLA Y LAS PAGINAS -->
 									<div id="articulos" class="table-wrapper">
-										<table id="lista">
+										<table id="tabla">
 										</table>
 										<ul class="actions">
 											<li><a id="nuevaPagina" href="http://localhost/new.html" class="button primary">Crear nueva página</a></li>
@@ -85,7 +85,7 @@
 				var articles = xml.getElementsByTagName("article");
 
 				// Actualizar dinámicamente el contenido de la página
-				var table = document.getElementById("lista");
+				var table = document.getElementById("tabla");
 
 				// Crear la cabecera de la tabla si no existe
 				if (!table.querySelector("thead")) {
@@ -108,6 +108,7 @@
 				// Crear el cuerpo de la tabla si no existe
 				if (!tbody) {
 					tbody = document.createElement("tbody");
+					tbody.id = "lista";
 					table.appendChild(tbody);
 				}
 
@@ -121,6 +122,8 @@
 					var editCell = document.createElement("td");
 					var viewCell = document.createElement("td");
 
+					tr.id = title;
+
 					var a = document.createElement("a");
 					a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
 					a.textContent = title;
@@ -129,6 +132,7 @@
 					var deleteForm = document.createElement("form");
 					deleteForm.action = "/cgi-bin/delete.pl";
 					deleteForm.method = "post";
+					deleteForm.id = "deleteForm";
 					var deleteOwner = document.createElement("input");
 					deleteOwner.type = "hidden";
 					deleteOwner.name = "owner";
@@ -148,6 +152,7 @@
 					var editForm = document.createElement("form");
 					editForm.action = "edit.html";
 					editForm.method = "get";
+					editForm.id = "editForm";
 					var editOwner = document.createElement("input");
 					editOwner.type = "hidden";
 					editOwner.name = "owner";
@@ -167,6 +172,7 @@
 					var viewForm = document.createElement("form");
 					viewForm.action = "/cgi-bin/article.pl";
 					viewForm.method = "post";
+					viewForm.id = "viewForm";
 					var viewOwner = document.createElement("input");
 					viewOwner.type = "hidden";
 					viewOwner.name = "owner";
@@ -196,8 +202,8 @@
 					xmlhttp.send();
 				});
     
-        // Delegación de eventos en el contenedor "lista"
-        document.getElementById("lista").addEventListener("submit", function (event) {
+        // Delegación de eventos en el contenedor "tabla"
+        document.getElementById("tabla").addEventListener("submit", function (event) {
             var form = event.target;
 
             // Verificar si el formulario enviado es el formulario para eliminar
