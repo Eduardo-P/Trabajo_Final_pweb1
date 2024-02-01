@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista Paginas Web</title>
+        <link rel="stylesheet" href="listPru.css" />
+    </head>
+    <body>
+        <nav>
+            <p>Wikipedia</p>
+            <img src="https://www.purdue.edu/discoverypark/arequipa-nexus/images/unsa.png" width="100" height="40">
+        </nav>
+        <div class="center">
+            <h1>Nuestras páginas de wiki</h1>
+            <div id="usuario"></div>
+
+            <div id="articulos">
+                <ul id="lista">
+                </ul>
+            </div>
+        
+            <hr>
+            <a id="nuevaPagina" href="http://localhost/new.html">Nueva Página</a>
+            <br>
+            <a href="http://localhost/acceso.html">Iniciar sesion con otro usuario</a>
+            <br>
+            <a href="http://localhost/index.html">Volver al Inicio</a>
+        </div>
+        <div id="result" class="hidden">
+            <div id="estructura" class="contenidoXML">
+                <h4>AVISO!</h4>
+                <pre id="content"></pre>
+            </div>
+        </div>
+    </body>
+    <script>
+        var parametros = new URLSearchParams(window.location.search);
+        var owner = parametros.get('owner');
+
+        document.getElementById("usuario").innerHTML = owner;
+
+        var enlace = document.getElementById("nuevaPagina");
+        enlace.href = enlace.href + "?owner=" + owner;
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Hacer la solicitud AJAX
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        // Procesar la respuesta XML
+        var xml = xmlhttp.responseXML;
+        var articles = xml.getElementsByTagName("article");
+
+        // Actualizar dinámicamente el contenido de la página
+        var table = document.getElementById("lista");
+
+        // Crear la cabecera de la tabla si no existe
+        if (!table.querySelector("thead")) {
+            var thead = document.createElement("thead");
+            var headerRow = document.createElement("tr");
+            var headers = ["Link", "Eliminar", "Editar", "Ver"];
+
+            headers.forEach(function (headerText) {
+                var th = document.createElement("th");
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+        }
+
+        var tbody = table.querySelector("tbody");
+
+        // Crear el cuerpo de la tabla si no existe
+        if (!tbody) {
+            tbody = document.createElement("tbody");
+            table.appendChild(tbody);
+        }
+
+        for (var i = 0; i < articles.length; i++) {
+            var article = articles[i];
+            var title = article.getElementsByTagName("title")[0].textContent;
+
+            var tr = document.createElement("tr");
+            var linkCell = document.createElement("td");
+            var deleteCell = document.createElement("td");
+            var editCell = document.createElement("td");
+            var viewCell = document.createElement("td");
+
+            var a = document.createElement("a");
+            a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
+            a.textContent = title;
+            linkCell.appendChild(a);
+
+            var deleteForm = document.createElement("form");
+            deleteForm.action = "/cgi-bin/delete.pl";
+            deleteForm.method = "post";
+            var deleteOwner = document.createElement("input");
+            deleteOwner.type = "hidden";
+            deleteOwner.name = "owner";
+            deleteOwner.value = owner;
+            var deleteTitle = document.createElement("input");
+            deleteTitle.type = "hidden";
+            deleteTitle.name = "title";
+            deleteTitle.value = title;
+            var deleteButton = document.createElement("input");
+            deleteButton.type = "submit";
+            deleteButton.value = "Eliminar";
+            deleteForm.appendChild(deleteOwner);
+            deleteForm.appendChild(deleteTitle);
+            deleteForm.appendChild(deleteButton);
+            deleteCell.appendChild(deleteForm);
+
+            var editForm = document.createElement("form");
+            editForm.action = "edit.html";
+            editForm.method = "get";
+            var editOwner = document.createElement("input");
+            editOwner.type = "hidden";
+            editOwner.name = "owner";
+            editOwner.value = owner;
+            var editTitle = document.createElement("input");
+            editTitle.type = "hidden";
+            editTitle.name = "title";
+            editTitle.value = title;
+            var editButton = document.createElement("input");
+            editButton.type = "submit";
+            editButton.value = "Editar";
+            editForm.appendChild(editOwner);
+            editForm.appendChild(editTitle);
+            editForm.appendChild(editButton);
+            editCell.appendChild(editForm);
+
+            var viewForm = document.createElement("form");
+            viewForm.action = "/cgi-bin/article.pl";
+            viewForm.method = "post";
+            var viewOwner = document.createElement("input");
+            viewOwner.type = "hidden";
+            viewOwner.name = "owner";
+            viewOwner.value = owner;
+            var viewTitle = document.createElement("input");
+            viewTitle.type = "hidden";
+            viewTitle.name = "title";
+            viewTitle.value = title;
+            var viewButton = document.createElement("input");
+            viewButton.type = "submit";
+            viewButton.value = "Ver";
+            viewForm.appendChild(viewOwner);
+            viewForm.appendChild(viewTitle);
+            viewForm.appendChild(viewButton);
+            viewCell.appendChild(viewForm);
+
+            tr.appendChild(linkCell);
+            tr.appendChild(deleteCell);
+            tr.appendChild(editCell);
+            tr.appendChild(viewCell);
+
+            tbody.appendChild(tr);
+        }
+    }
+};
+
+
+
+
+            /*
+            // Hacer la solicitud AJAX
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    // Procesar la respuesta XML
+                    var xml = xmlhttp.responseXML;
+                    var articles = xml.getElementsByTagName("article");
+    
+                    // Actualizar dinámicamente el contenido de la página
+                    var lista = document.getElementById("lista");
+    
+                    for (var i = 0; i < articles.length; i++) {
+                        var article = articles[i];
+                        var title = article.getElementsByTagName("title")[0].textContent;
+    
+                        var li = document.createElement("li");
+                        var a = document.createElement("a");
+                        var deleteForm = document.createElement("form");
+                        var editForm = document.createElement("form");
+                        var viewForm = document.createElement("form");
+
+                        li.id = title;
+    
+                        a.href = "/cgi-bin/view.pl?owner=" + encodeURIComponent(owner) + "&title=" + encodeURIComponent(title);
+                        a.textContent = title;
+    
+                        deleteForm.action = "/cgi-bin/delete.pl";
+                        deleteForm.method = "post";
+                        deleteForm.id = "deleteForm";
+                        var deleteOwner = document.createElement("input");
+                        deleteOwner.type = "hidden";
+                        deleteOwner.name = "owner";
+                        deleteOwner.value = owner;
+                        var deleteTitle = document.createElement("input");
+                        deleteTitle.type = "hidden";
+                        deleteTitle.name = "title";
+                        deleteTitle.value = title;
+                        var deleteButton = document.createElement("input");
+                        deleteButton.type = "submit";
+                        deleteButton.value = "Eliminar";
+                        deleteForm.appendChild(deleteOwner);
+                        deleteForm.appendChild(deleteTitle);
+                        deleteForm.appendChild(deleteButton);
+    
+                        editForm.action = "edit.html";
+                        editForm.method = "get";
+                        editForm.id = "editForm";
+                        var editOwner = document.createElement("input");
+                        editOwner.type = "hidden";
+                        editOwner.name = "owner";
+                        editOwner.value = owner;
+                        var editTitle = document.createElement("input");
+                        editTitle.type = "hidden";
+                        editTitle.name = "title";
+                        editTitle.value = title;
+                        var editButton = document.createElement("input");
+                        editButton.type = "submit";
+                        editButton.value = "Editar";
+                        editForm.appendChild(editOwner);
+                        editForm.appendChild(editTitle);
+                        editForm.appendChild(editButton);
+
+                        viewForm.action = "/cgi-bin/article.pl";
+                        viewForm.method = "post";
+                        viewForm.id = "viewForm";
+                        var viewOwner = document.createElement("input");
+                        viewOwner.type = "hidden";
+                        viewOwner.name = "owner";
+                        viewOwner.value = owner;
+                        var viewTitle = document.createElement("input");
+                        viewTitle.type = "hidden";
+                        viewTitle.name = "title";
+                        viewTitle.value = title;
+                        var viewButton = document.createElement("input");
+                        viewButton.type = "submit";
+                        viewButton.value = "Ver";
+                        viewForm.appendChild(viewOwner);
+                        viewForm.appendChild(viewTitle);
+                        viewForm.appendChild(viewButton);
+    
+                        li.appendChild(a);
+                        li.appendChild(deleteForm);
+                        li.appendChild(editForm);
+                        li.appendChild(viewForm);
+    
+                        lista.appendChild(li);
+                    }
+                }
+            };*/
+    
+            xmlhttp.open("GET", "/cgi-bin/list.pl?owner=" + encodeURIComponent(owner), true);
+            xmlhttp.send();
+        });
+    
+        // Delegación de eventos en el contenedor "lista"
+        document.getElementById("lista").addEventListener("submit", function (event) {
+            var form = event.target;
+
+            // Verificar si el formulario enviado es el formulario para eliminar
+            if (form.tagName === "FORM" && form.id === "deleteForm") {
+                event.preventDefault();
+
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(xmlData => {
+                    var parser = new DOMParser();
+                    var xml = parser.parseFromString(xmlData, "text/xml");
+
+                    // Verificar si el XML contiene elemento <title>
+                    var titleElement = xml.querySelector('title');
+
+                    if (titleElement) {
+                        var titleValue = titleElement.textContent;
+                        var eliminarArticulo = document.getElementById(titleValue);
+
+                        var lista = document.getElementById("lista");
+                        lista.removeChild(eliminarArticulo);
+
+                        document.getElementById("content").textContent = "Se elimino correctamente el articulo " + titleValue;
+                    } else {
+                        document.getElementById("content").textContent = "Error al eliminar el articulo!";
+                    }
+                    document.getElementById("result").classList.remove("hidden");
+
+                    setTimeout(function () {
+                        document.getElementById("result").classList.add("hidden");
+                    }, 5000);
+                });
+
+            // Verificar si el formulario enviado es el formulario para ver el codigo MarckDown
+            } else if (form.tagName === "FORM" && form.id === "viewForm") {
+                event.preventDefault();
+
+                var form = event.target;
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(xmlData => {
+                    var parser = new DOMParser();
+                    var xml = parser.parseFromString(xmlData, "text/xml");
+
+                    var titleValue = xml.querySelector('title').textContent;
+                    var textValue = xml.querySelector('text').textContent;
+                    window.location.href = "/cgi-bin/viewMarkdown.pl?owner=" + encodeURIComponent(owner) +"&title=" + encodeURIComponent(titleValue) + "&text=" + encodeURIComponent(textValue);
+                });
+            }
+        });
+    </script>
+</html>
