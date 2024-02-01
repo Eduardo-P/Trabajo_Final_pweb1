@@ -15,5 +15,5 @@ start_html(-title=>$title),
 h1 ($title),
 $text,
 hr,
-h3 ("Pagina grabada", a({-href => "http://localhost/list.html?owner=$owner"}, 'Listado de Paginas')),
+h3 ("Pagina grabada", a({-href => "http://localhost/list.html?owner=$owner" + "#crear"}, 'Listado de Paginas')),
 end_html;
