@@ -22,7 +22,14 @@
 							<p>¡Puedes crear todas las páginas que quieras!</p>
 							<a href="#crear" class="button">Ir a la lista</a>
 						</header>
-						<section class="wrapper style1">
+						<section class="wrapper style1" id="mode-switch">
+							<div class="switch-container">
+								<label class="switch-checkbox">
+								  <input type="checkbox" id="mode-toggle">
+								  <span class="slider"></span>
+								</label>
+								<label class="switch-label">Cambiar modo</label>
+							</div>
 							<div class="inner">
 								<section>
 									<h5>¿Qué es el lenguaje MarkDown?</h5>
@@ -66,6 +73,19 @@
 				</div>
 			</div>
 	</body>
+	<!-- SCRIPT PARA EL MODO OSCURO -->
+	<script>
+        const modeToggle = document.getElementById('mode-toggle');
+        const wrapper = document.getElementById('mode-switch');
+
+        modeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                wrapper.classList.remove('style1');
+            } else {
+                wrapper.classList.add('style1');
+            }
+        });
+	</script>
 	<script>
         var parametros = new URLSearchParams(window.location.search);
         var owner = parametros.get('owner');

@@ -16,7 +16,14 @@
 					</header>
 				<!-- Main -->
 					<article id="main">
-						<section class="wrapper style1">
+						<section class="wrapper style1" id="mode-switch">
+							<div class="switch-container">
+								<label class="switch-checkbox">
+								  <input type="checkbox" id="mode-toggle">
+								  <span class="slider"></span>
+								</label>
+								<label class="switch-label">Cambiar modo</label>
+							</div>
 							<div class="inner">
 								<h4>Editar el contenido de:</h4>
 								<h4 id="titulo"></h4>
@@ -39,6 +46,20 @@
 					</article>
 			</div>
 	</body>
+	<!-- SCRIPT PARA EL MODO OSCURO -->
+	<script>
+        const modeToggle = document.getElementById('mode-toggle');
+        const wrapper = document.getElementById('mode-switch');
+
+        modeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                wrapper.classList.remove('style1');
+            } else {
+                wrapper.classList.add('style1');
+            }
+        });
+	</script>
+	
 	<script>
 		var parametros = new URLSearchParams(window.location.search);
 		var owner = parametros.get('owner');
