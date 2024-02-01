@@ -1,108 +1,54 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>New Web</title>
-        <style>
-            h1 {
-                text-align: center;
-                padding: 5px 0;
-                border-bottom: 1px solid silver;
-                font-size: 20px;
-            }
-            body {
-                background: #2980b9;
-                height: 100vh;
-            }
-            .center {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                max-width: 510px;
-                width: 100%;
-                background: white;
-                border-radius: 10px;
-            }
-            .center form {
-                padding: 0 30px;
-                box-sizing: border-box;
-            }
-            input[type="submit"] {
-                width: 80px;
-                height: 30px;
-                background: #2691d9;
-                border-radius: 25px;
-                font-size: 15px;
-                color: #e9f4fb;
-                font-weight: 700;
-                cursor: pointer;
-                outline: none;
-                transition: 0.5s;
-                border: none;
-            }
-            input[type="submit"]:hover {
-                background-color: #1E72AA;
-            }
-            label{
-                font: bold 50% Candara;
-                font-size: 20px;
-            }
-            #listPagina{
-                padding: 5px 30px;
-                font-size: 18px;
-            }
-            .hidden {
-                display: none;
-            }
-            .contenidoXML {
-                position: fixed;
-                font-size: 90%;
-                top: 11%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: black;
-                color: white;
-                border-radius: 10px;
-                padding: 15px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            }
-            .contenidoXML h4 {
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="center">
-            <div id="usuario"></div>
-            <form id="new" method="post" action="/cgi-bin/new.pl">
-                <input type="hidden" name="owner" id="owner" value="">
-                <table>
-                    <tr>
-                        <td> <h4><label for="titulo">Título:</label></h4> </td>
-                        <td>
-                            <input type="text" name="title" id="titulo" value="" size="52" style="padding-bottom: 10px"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> <h4><label for="markdown">Texto:</label></h4> </td>
-                        <td>
-                            <textarea id="markdown" name="text" value="" size="90" rows="10" cols="50" style="padding-bottom: 10px"></textarea>
-                        </td>
-                    </tr>
-                </table>
-                <input type="submit" value="Enviar">
-            </form>
-            <p> <a id="listPagina" href="http://localhost/list.html"> Cancelar </a> </p>	
-        </div>
-        <div id="result" class="hidden">
-            <div id="estructura" class="contenidoXML">
-                <h4>AVISO!</h4>
-                <pre id="content"></pre>
-            </div>
-        </div>
-    </body>
-    <script>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Crear Nueva Página</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="paginas.css" />
+	</head>
+	<body class="is-preload">
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="main.html">The New Wiki</a></h1>
+					</header>
+				<!-- Main -->
+					<article id="main">
+						<section class="wrapper style5">
+							<div class="inner">
+								<h4 id="usuario"></h4>
+								<h4>CREA TU NUEVA PÁGINA</h4>
+								<form id="new" method="post" action="/cgi-bin/new.pl">
+									<input type="hidden" name="owner" id="owner" value="">
+                                    <h5 for="titulo">Titulo:</h5>
+									<div class="col-6">
+										<input type="text" name="title" id="titulo" value="" placeholder="Ingresa un título para tu página"/>
+									</div>
+                                    <h5 for="markdown">Contenido Markdown:</h5>
+									<div class="col-12">
+										<textarea name="text" id="markdown" value=""placeholder="¡Empieza a hacer tu página!" rows="8"></textarea>
+									</div>
+
+									<div class="col-12">
+                                        <ul class="actions">
+                                            <li><input type="submit" class="button primary" value="Guardar"></li>
+                                            <li><a id="listPagina" href="http://localhost/list.html" class="button">Cancelar</a></li>
+                                        </ul>
+									</div>
+								</form>
+							</div>
+						</section>
+					</article>
+			</div>
+			<div id="result" class="hidden">
+				<div id="estructura" class="contenidoXML">
+					<h4>AVISO!</h4>
+					<pre id="content"></pre>
+				</div>
+			</div>
+	</body>
+	<script>
         var parametros = new URLSearchParams(window.location.search);
         var owner = parametros.get('owner');
 
