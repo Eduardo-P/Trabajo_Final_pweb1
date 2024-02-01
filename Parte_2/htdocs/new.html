@@ -15,7 +15,7 @@
 					</header>
 				<!-- Main -->
 					<article id="main">
-						<section class="wrapper style5">
+						<section class="wrapper style1">
 							<div class="inner">
 								<h4 id="usuario"></h4>
 								<h4>CREA TU NUEVA PÁGINA</h4>
@@ -56,7 +56,7 @@
 		document.getElementById("owner").value = owner;
 
 		var enlace = document.getElementById("listPagina");
-		enlace.href = enlace.href + "?owner=" + owner;
+		enlace.href = enlace.href + "?owner=" + owner + "#crear";
 
 		document.getElementById("new").addEventListener("submit", function(event) {
 			event.preventDefault();
