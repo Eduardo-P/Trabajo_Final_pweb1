@@ -50,12 +50,15 @@
 	<script>
         const modeToggle = document.getElementById('mode-toggle');
         const wrapper = document.getElementById('mode-switch');
+		const header = document.getElementById('header');
 
         modeToggle.addEventListener('change', function() {
             if (this.checked) {
                 wrapper.classList.remove('style1');
+				header.style.backgroundColor = 'black';
             } else {
                 wrapper.classList.add('style1');
+				header.style.backgroundColor = ''; // Reinicia el color a su estado original
             }
         });
 	</script>
